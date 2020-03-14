@@ -1,0 +1,5 @@
+---
+# Handle common notifications. This handler is called by other plays.
+
+- name: restart ntp
+  service: name=ntpd state=restarted
