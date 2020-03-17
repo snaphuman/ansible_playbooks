@@ -1,0 +1,3 @@
+# Main tasks for webserver configuration
+
+- include: install_nginx.yml

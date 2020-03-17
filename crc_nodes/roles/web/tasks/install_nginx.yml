@@ -1,0 +1,18 @@
+# These tashs install nginx, php-fpm and php modules.
+
+- name: Add remi repository to get latest versions of packages
+  yum_repository:
+    name: remi
+    description: REMI YUM repo
+    baseurl: https://mirror.pit.teraswitch.com/remi/enterprise/7/php73/x86_64/
+
+- name: Import remi gpg key
+  rpm_key:
+    key: https://rpms.remirepo.net/RPM-GPG-KEY-remi
+    state: present
+
+- name: Install nginx, php-fpm and php
+  yum: name="{{ item }}" state=present
+  loop:
+    - nginx
+    - php

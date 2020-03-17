@@ -8,4 +8,11 @@
   roles:
     - common
 
+- name: configure the webservers
+  hosts: webservers
+  remote_user: root
+
+  roles:
+    - web
+
 
