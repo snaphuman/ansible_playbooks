@@ -1,6 +1,10 @@
 ---
 # This playbook contains comon plays that will be run in all nodes
 
+- name: Configure timezone
+  timezone:
+    name: America/Bogota
+
 - name: Install ntp
   yum: name=ntp state=present
   tags: ntp
