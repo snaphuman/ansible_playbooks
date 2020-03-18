@@ -5,23 +5,23 @@ To keep sensible information away from control version system, we should to crea
 
 * Ceate a file DATABASE_PARAMS containig the following lines:
 
-´´´ sh
+``` sh
 #!/bin/bash
 
 export VM_CRC_DB_NAME="database_name"
 export VM_CRC_DB_USER="database_user"
 export VM_CRC_DB_PASSWD="database_secret"
-´´´
+```
 
-* Save the file and source it
+Save the file and source it
 
-´´´ sh
+``` sh
 source DATABASE_PARAMS
-´´´
+```
 
 * Finally you can check if environment variables where created
 
-´´´ sh
+``` sh
 env | grep VM_CRC
-´´´
+```
 
