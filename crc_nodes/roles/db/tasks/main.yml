@@ -1,0 +1,36 @@
+# This playbook will install mariadb and configure database
+
+- name: Install MariaDB package
+  yum: name="{{ item }}" state=installed
+  loop:
+    - mariadb-server
+    - MySQL-python
+
+- name: Create Mysql configuration file
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+  notify:
+  - restart mariadb
+
+- name: Create MariaDB log file
+  file: path=/var/log/mysqld.log state=touch owner=mysql group=mysql mode=0775
+
+- name: Create MariaDB PID directory
+  file: path=/var/run/mysqld state=directory owner=mysql group=mysql mode=0775
+
+- name: Create MariaDB Data directory
+  file: path=/mnt/resource/mysql state=directory owner=mysql group=mysql mode=0775
+
+- name: Enable firewall unit
+  service: name=firewalld state=started enabled=yes
+
+- name: Insert firewall rule
+  firewalld: port=3306/tcp permanent=true state=enabled immediate=yes
+
+- name: Start MariaDB unit
+  service: name=mariadb state=started enabled=yes
+
+- name: Create application database
+  mysql_db: name={{ dbname }} state=present
+
+- name: Create application DB User
+  mysql_user: name={{ dbuser }} password={{ upasswd }} priv=*.*:ALL host='%' state=present

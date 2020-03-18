@@ -1,0 +1,4 @@
+# Handle DB services
+
+- name: restart mariadb
+  service: name=mariadb state=restarted 

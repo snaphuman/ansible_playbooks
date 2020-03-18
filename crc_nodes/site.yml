@@ -15,4 +15,11 @@
   roles:
     - web
 
+- name: configure database servers
+  hosts: dbservers
+  remote_user: root
+
+  roles:
+    - db
+
 
