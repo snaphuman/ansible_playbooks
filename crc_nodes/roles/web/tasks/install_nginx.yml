@@ -16,3 +16,6 @@
   loop:
     - nginx
     - php
+
+- name: Change state service state
+  service: name=nginx state=started enabled=yes

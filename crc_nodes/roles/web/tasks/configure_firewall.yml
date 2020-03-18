@@ -1,0 +1,7 @@
+# These tasks are responsible for the firewall configuration
+
+- name: enable firewall unit
+  service: name=firewalld state=started enabled=yes
+
+- name: enable incoming ports for a service
+  firewalld: port=80/tcp permanent=true state=enabled immediate=yes
