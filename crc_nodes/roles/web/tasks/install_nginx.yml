@@ -17,5 +17,8 @@
     - nginx
     - php
 
+- name: Apply drupal configuration file for nginx
+  template: src=nginx.drupal.conf.j2 dest=/etc/nginx/conf.d/drupal.conf
+
 - name: Change state service state
   service: name=nginx state=started enabled=yes

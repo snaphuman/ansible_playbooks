@@ -2,7 +2,7 @@
 # These tasks are responsible to copy files to environments, starting 
 # by test files or application code from version system.
 
-- name: Create apps directort inside resources partition
+- name: Create apps directory inside resources partition
   file:
     path: /mnt/resources/webapps
     state: directory
