@@ -20,14 +20,27 @@
 - name: Create MariaDB Data directory
   file: path=/mnt/resource/mysql state=directory owner=mysql group=mysql mode=0775
 
-- name: Enable firewall unit
-  service: name=firewalld state=started enabled=yes
-
 - name: Insert firewall rule
   firewalld: port=3306/tcp permanent=true state=enabled immediate=yes
 
+- name: Configure SElinux to allow mysql connections
+  seboolean: name=mysql_connect_any state=true persistent=yes
+
+- name: configure SElinux contexto to allow writable data directory
+  sefcontext:
+    target: '/mnt/resource/mysql(/.*)?'
+    setype: mysqld_db_t
+    state: present
+
+- name: Apply new SELinux file context to filesystem
+  command: restorecon -Rv /mnt/resource/mysql
+
 - name: Start MariaDB unit
   service: name=mariadb state=started enabled=yes
+
+- name: Debug database connection params - remember to source the database environment vars
+  debug:
+    msg: dbname {{ dbname }} dbuser {{ dbuser }} upasswd {{ upasswd }}
 
 - name: Create application database
   mysql_db: name={{ dbname }} state=present
