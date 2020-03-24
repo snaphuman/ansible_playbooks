@@ -1,0 +1,4 @@
+# Handle Web services
+
+- name: restart php-fpm unit service
+  service: name=php-fpm state=restarted

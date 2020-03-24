@@ -1,0 +1,9 @@
+# These tasks configure php-fpm unit service
+
+- name: Disable php-fpm default pool
+  command: mv /etc/php-fpm.d/www.conf /etc/php-fpm.d/www.disabled creates=/etc/php-fpm.d/www.disabled
+  notify: restart php-fpm
+
+- name: Copy php-fpm configuration
+  template: src=php-fpm.drupal.conf.j2 dest=/etc/php-fpm.d/drupal.conf
+  notify: restart php-fpm

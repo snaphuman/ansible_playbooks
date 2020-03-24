@@ -1,5 +1,6 @@
 # Main tasks for webserver configuration
 
 - include: install_nginx.yml
+- include: configure_php-fpm.yml
 - include: configure_firewall.yml
 - include: copy_files.yml
