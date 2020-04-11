@@ -1,0 +1,22 @@
+- name: Copy drupal config file
+  template: src=drupal.7.settings.php.j2 dest={{ item.path }}/sites/default/settings.php
+  with_items: "{{ applications }}"
+
+- name: Set SELinux policy for the drupal site directory
+  sefcontext:
+    target: "{{ item.path }}(/.*)?"
+    setype: httpd_sys_content_t
+    state: present
+  with_items: "{{ applications }}"
+
+- name: Set SELinux policy for the drupal site content generated directory
+  sefcontext:
+    target: "{{ item.path }}/sites/default(/.*)?"
+    setype: httpd_sys_rw_content_t
+    state: present
+  with_items: "{{ applications }}"
+  
+- name: Set SElinux on all the site files
+  command: restorecon -Rv {{ item.path }}
+  with_items: applications
+

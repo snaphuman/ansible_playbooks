@@ -1,5 +1,0 @@
----
-# Global variables applicable to webservers hosts
-
-sitename: postdata # dont use spaces. use dashes (lower and upper) instead dots.
-site_env: test # usage: local|test|dev|prod

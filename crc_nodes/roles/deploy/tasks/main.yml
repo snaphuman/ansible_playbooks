@@ -1,0 +1,4 @@
+# Main tasks for app deployment
+
+- include: deploy_site.yml
+- include: config_site.yml

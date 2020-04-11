@@ -4,3 +4,23 @@
 ntpserver0: 2.co.pool.ntp.org
 ntpserver1: 0.south-america.pool.ntp.org
 ntpserver2: 2.south-america.pool.ntp.org 
+
+app_token: "{{  lookup('env', 'VM_POSTDATA_APP_TOKEN') }}"
+
+applications:
+  - name: postdata
+    site_env: test
+    path: /mnt/resources/webapps/postdata
+    repository: https://oauth2:{{ app_token }}@gitlab.com/portal_crc/post_data.git
+    branch: test
+    dbname: "{{ lookup('env', 'VM_POSTDATA_DB_NAME') }}"
+    dbuser: "{{ lookup('env', 'VM_POSTDATA_DB_USER') }}"
+    upasswd: "{{ lookup('env', 'VM_POSTDATA_DB_PASSWD') }}"
+  - name: drupal 
+    site_env: test
+    path: /mnt/resources/webapps/drupal
+    repository: https://github.com/drupal/drupal
+    branch: test
+    dbname: "{{ lookup('env', 'VM_DRUPAL_DB_NAME') }}"
+    dbuser: "{{ lookup('env', 'VM_DRUPAL_DB_USER') }}"
+    upasswd: "{{ lookup('env', 'VM_DRUPAL_DB_PASSWD') }}"

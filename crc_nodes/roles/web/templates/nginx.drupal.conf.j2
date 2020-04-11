@@ -1,6 +1,9 @@
 server {
-    server_name {{ sitename }}.{{ site_env }};
-    root /mnt/resources/webapps/{{ sitename }};
+    server_name {{ item.name }}.{{ item.site_env }};
+    root /mnt/resources/webapps/{{ item.name }};
+
+    access_log /var/log/nginx/{{ item.name }}/access.log
+    error_log /var/log/nginx/{{ item.name}}/error.log
 
     location = /favicon.ico {
         log_not_found off;

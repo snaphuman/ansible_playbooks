@@ -1,6 +1,0 @@
----
-# Global variables applicable to dbservers
-
-dbname: "{{ lookup('env', 'VM_CRC_DB_NAME') }}"
-dbuser: "{{ lookup('env', 'VM_CRC_DB_USER') }}"
-upasswd: "{{ lookup('env', 'VM_CRC_DB_PASSWD') }}"

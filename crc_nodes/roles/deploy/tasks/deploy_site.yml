@@ -1,0 +1,7 @@
+# Deploy tasks
+
+- name:  Fetch source code from git
+  git:
+    repo: "{{ item.repository }}"
+    dest: "{{ item.path }}"
+  with_items: "{{ applications }}"

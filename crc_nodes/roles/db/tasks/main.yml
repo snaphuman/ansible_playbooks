@@ -26,7 +26,7 @@
 - name: Configure SElinux to allow mysql connections
   seboolean: name=mysql_connect_any state=true persistent=yes
 
-- name: configure SElinux contexto to allow writable data directory
+- name: configure SElinux context to allow writable data directory
   sefcontext:
     target: '/mnt/resource/mysql(/.*)?'
     setype: mysqld_db_t
@@ -35,15 +35,18 @@
 - name: Apply new SELinux file context to filesystem
   command: restorecon -Rv /mnt/resource/mysql
 
-- name: Start MariaDB unit
-  service: name=mariadb state=started enabled=yes
-
 - name: Debug database connection params - remember to source the database environment vars
   debug:
-    msg: dbname {{ dbname }} dbuser {{ dbuser }} upasswd {{ upasswd }}
+    msg: dbname {{ item.dbname }} dbuser {{ item.dbuser }} upasswd {{ item.upasswd }}
+  with_items: "{{ applications }}"
 
-- name: Create application database
-  mysql_db: name={{ dbname }} state=present
+- name: Create drupal database
+  mysql_db: name={{ item.dbname}} state=present
+  with_items: "{{ applications }}"
 
-- name: Create application DB User
-  mysql_user: name={{ dbuser }} password={{ upasswd }} priv=*.*:ALL host='%' state=present
+- name: Create drupal database user
+  mysql_user: name={{ item.dbuser }} password={{ item.upasswd }} priv={{ item.dbname }}.*:ALL host='%' state=present
+  with_items: "{{ applications }}"
+
+- name: Start MariaDB unit
+  service: name=mariadb state=started enabled=yes
