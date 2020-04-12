@@ -1,0 +1,48 @@
+# These tashs install nginx, php-fpm and php modules.
+
+- name: Add remi repository to get latest versions of packages
+  yum_repository:
+    name: remi
+    description: REMI YUM repo
+    baseurl: https://mirror.pit.teraswitch.com/remi/enterprise/7/php73/x86_64/
+
+- name: Import remi gpg key
+  rpm_key:
+    key: https://rpms.remirepo.net/RPM-GPG-KEY-remi
+    state: present
+
+- name: Install regular expression library required by php-mbstring
+  yum: name=https://rpmfind.net/linux/remi/enterprise/7/remi/x86_64/oniguruma5-6.9.4-1.el7.remi.x86_64.rpm state=present
+
+- name: Install nginx, php-fpm and php
+  yum: name="{{ item }}" state=present
+  loop:
+    - nginx
+    - php
+    - php-fpm
+    - php-mbstring
+    - php-mysql
+    - php-xml
+
+- name: Apply drupal configuration file for nginx
+  template: src=nginx.drupal.conf.j2 dest=/etc/nginx/conf.d/{{ item.name }}.conf
+  with_items: "{{ applications }}"
+
+- name: Create nginx logs directory for apps
+  file:
+    path: /var/log/nginx/{{ item.name }}
+    state: directory
+    mode: '0755'
+  with_items: "{{ applications }}"
+
+- name: Configure SELinux to allow nginx remote connections
+  seboolean:
+    name: "{{ item.name }}"
+    state: true
+    persistent: yes
+  with_items:
+    - { name: httpd_can_network_connect }
+    - { name: httpd_can_network_connect_db }
+
+- name: Change state service state
+  service: name=nginx state=started enabled=yes

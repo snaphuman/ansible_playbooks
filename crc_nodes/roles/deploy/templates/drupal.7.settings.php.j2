@@ -251,7 +251,7 @@ $databases['default']['default'] = array(
   'database' => {{ item.dbname }},
   'username' => {{ item.dbuser}},
   'password' => {{ item.upasswd }},
-  'host' => {{  hostvars['vm_dbs_crc']['ansible_default_ipv4']['address']}},
+  'host' => {{ item.host }},
   'prefix' => '',
   'collation' => 'utf8_general_ci',
 );

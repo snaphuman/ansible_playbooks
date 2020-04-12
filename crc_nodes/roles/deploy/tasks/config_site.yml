@@ -1,3 +1,9 @@
+- name: ensure if default directory exists
+  file: 
+    path: "{{ item.path }}/sites/default"
+    state: directory
+  with_items: "{{ applications }}"
+
 - name: Copy drupal config file
   template: src=drupal.7.settings.php.j2 dest={{ item.path }}/sites/default/settings.php
   with_items: "{{ applications }}"
@@ -18,5 +24,5 @@
   
 - name: Set SElinux on all the site files
   command: restorecon -Rv {{ item.path }}
-  with_items: applications
+  with_items: "{{ applications }}"
 

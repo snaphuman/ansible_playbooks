@@ -4,3 +4,4 @@
 - include: configure_php-fpm.yml
 - include: configure_firewall.yml
 - include: copy_files.yml
+- include: install_git.yml

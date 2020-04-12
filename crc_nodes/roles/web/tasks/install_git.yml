@@ -1,0 +1,44 @@
+# Latest git install and config 
+# Borrowed from https://awsbloglink.wordpress.com/2018/10/09/how-to-install-git-using-ansible-2018-git/
+---
+- name: Install yum package
+  yum:
+    name:
+      - curl-devel
+      - expat-devel
+      - gettext-devel
+      - openssl-devel
+      - zlib-devel
+      - wget
+      - gcc
+      - cpan
+
+- name: Get git binary
+  unarchive:
+    src: "{{ git_url }}"
+    dest: "{{ temp_dir }}"
+    remote_src: yes
+  changed_when: false
+  register: result
+
+- name: Make all git binary
+  make:
+    chdir: "{{ git_binary_dir }}"
+    target: all
+    params:
+      git_prefix: "{{ git_prefix }}"
+  changed_when: false
+
+- name: Make install git binary
+  make:
+    chdir: "{{ git_binary_dir }}"
+    target: install
+    params:
+      git_prefix: "{{ git_prefix }}"
+  changed_when: false
+
+- name: Remove file
+  file:
+    path: "{{ git_binary_dir }}"
+    state: absent
+  changed_when: false

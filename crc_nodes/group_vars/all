@@ -16,6 +16,7 @@ applications:
     dbname: "{{ lookup('env', 'VM_POSTDATA_DB_NAME') }}"
     dbuser: "{{ lookup('env', 'VM_POSTDATA_DB_USER') }}"
     upasswd: "{{ lookup('env', 'VM_POSTDATA_DB_PASSWD') }}"
+    host: "52.170.254.37"
   - name: drupal 
     site_env: test
     path: /mnt/resources/webapps/drupal
@@ -24,3 +25,4 @@ applications:
     dbname: "{{ lookup('env', 'VM_DRUPAL_DB_NAME') }}"
     dbuser: "{{ lookup('env', 'VM_DRUPAL_DB_USER') }}"
     upasswd: "{{ lookup('env', 'VM_DRUPAL_DB_PASSWD') }}"
+    host: "52.170.254.37"
