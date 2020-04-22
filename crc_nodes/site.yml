@@ -1,7 +1,7 @@
 # This playbook deploys the application stack for CMS's
 
 - name: apply common configuration to all nodes
-  hosts: all
+  hosts: all, !localdev
   remote_user: root
   become: yes
 
@@ -9,24 +9,39 @@
     - common
 
 - name: configure the webservers
-  hosts: webservers
+  hosts: webservers, !localdev
   remote_user: root
 
   roles:
     - web
 
 - name: configure database servers
-  hosts: dbservers
+  hosts: dbservers, !localdev
   remote_user: root
 
   roles:
     - db
 
 - name: deploy applications
-  hosts: webservers 
+  hosts: webservers, !localdev
   remote_user: root
-
   roles:
-    - deploy
+    - role: deploy
+      tags:
+        - deploy
 
+- name: sync files
+  hosts: webservers, localdev
+  roles: 
+    - role: deploy/postdata
+      tags:
+        - postdata
 
+- name: manage database operations
+  hosts: dbservers, localdev
+  roles:
+    - role: deploy/postdata/db
+      tags:
+        - postdata_db
+      vars:
+        - operation: "import" # use import or export"
