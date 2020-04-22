@@ -7,6 +7,8 @@
     path: /mnt/resources/webapps/{{ item.name }}
     state: directory
     mode: '0755'
+    owner: webmaster
+    group: webmaster
   with_items: "{{ applications }}"
 
 - name: Create test file to verify php server settings

@@ -5,3 +5,4 @@
     repo: "{{ item.repository }}"
     dest: "{{ item.path }}"
   with_items: "{{ applications }}"
+  become: webmaster

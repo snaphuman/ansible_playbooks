@@ -1,11 +1,17 @@
 - name: ensure if default directory exists
   file: 
-    path: "{{ item.path }}/sites/default"
+    path: "{{ item.path }}/sites/default/files"
     state: directory
+    owner: webmaster
+    group: webmaster
   with_items: "{{ applications }}"
 
 - name: Copy drupal config file
-  template: src=drupal.7.settings.php.j2 dest={{ item.path }}/sites/default/settings.php
+  template:
+    src: drupal.7.settings.php.j2 
+    dest: "{{ item.path }}/sites/default/settings.php"
+    owner: webmaster
+    group: webmaster
   with_items: "{{ applications }}"
 
 - name: Set SELinux policy for the drupal site directory
