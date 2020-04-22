@@ -1,32 +1,34 @@
 # Latest git install and config 
 # Borrowed from https://awsbloglink.wordpress.com/2018/10/09/how-to-install-git-using-ansible-2018-git/
+# with some adjustments
 ---
-- name: Install yum package
-  yum:
-    name:
-      - curl-devel
-      - expat-devel
-      - gettext-devel
-      - openssl-devel
-      - zlib-devel
-      - wget
-      - gcc
-      - cpan
+- name: Install git dependencies
+  yum: name="{{ item }}" state=present
+  loop:
+    - curl-devel
+    - expat-devel
+    - gettext-devel
+    - openssl-devel
+    - zlib-devel
+    - perl-ExtUtils-MakeMaker
+    - wget
+    - gcc
+    - cpan
 
 - name: Get git binary
   unarchive:
     src: "{{ git_url }}"
     dest: "{{ temp_dir }}"
     remote_src: yes
-  changed_when: false
-  register: result
+  #changed_when: false
+  #register: result
 
 - name: Make all git binary
   make:
     chdir: "{{ git_binary_dir }}"
     target: all
     params:
-      git_prefix: "{{ git_prefix }}"
+      prefix: "{{ git_prefix }}"
   changed_when: false
 
 - name: Make install git binary
@@ -34,11 +36,23 @@
     chdir: "{{ git_binary_dir }}"
     target: install
     params:
-      git_prefix: "{{ git_prefix }}"
+      prefix: "{{ git_prefix }}"
   changed_when: false
+
+- name: Setup environment
+  lineinfile:
+    path: /etc/bashrc
+    regexp: "^/usr/local/git/bin"
+    line: "export PATH={{ git_prefix }}/bin:$PATH"
+
+- name: Source git exported PATH var
+  shell: "source /etc/bashrc"
 
 - name: Remove file
   file:
     path: "{{ git_binary_dir }}"
     state: absent
   changed_when: false
+
+- name: Remove obsolete version of git installed as dependency with gettext-devel above
+  yum: name=git state=absent
