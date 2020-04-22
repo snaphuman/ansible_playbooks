@@ -10,3 +10,9 @@ all:
         vm_dbs_crc:
           ansible_host: 52.170.254.37
           ansible_user: webmaster
+    localdev:
+      hosts:
+        zoque:
+          ansible_host: "{{ lookup('env', 'VM_ZOQUE_IP_ADDRESS') }}"
+          ansible_user: "{{ lookup('env', 'VM_ZOQUE_USER') }}"
+          ansible_sudo_pass: "{{ lookup('env', 'VM_ZOQUE_SUDO_PASSWD') }}"
