@@ -1,9 +1,10 @@
 server {
+    listen {{ item.port }} default_server;
     server_name {{ item.name }}.{{ item.site_env }};
     root /mnt/resources/webapps/{{ item.name }};
 
-    access_log /var/log/nginx/{{ item.name }}/access.log
-    error_log /var/log/nginx/{{ item.name}}/error.log
+    access_log /var/log/nginx/{{ item.name }}/access.log;
+    error_log /var/log/nginx/{{ item.name}}/error.log;
 
     location = /favicon.ico {
         log_not_found off;
@@ -88,7 +89,7 @@ server {
         fastcgi_param QUERY_STRING $query_string;
         fastcgi_intercept_errors on;
         # PHP 7 socket location.
-        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+        fastcgi_pass unix:/var/run/php-fpm/php7.0-fpm.sock;
     }
 
     # Fighting with Styles? This little gem is amazing.

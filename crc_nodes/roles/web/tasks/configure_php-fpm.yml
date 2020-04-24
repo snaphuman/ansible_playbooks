@@ -1,5 +1,12 @@
 # These tasks configure php-fpm unit service
 
+- name: ensure php-fpm socket directory exists
+  file:
+    path: /var/run/php-fpm
+    state: directory
+    owner: webmaster
+    group: webmaster
+    
 - name: Disable php-fpm default pool
   command: mv /etc/php-fpm.d/www.conf /etc/php-fpm.d/www.disabled creates=/etc/php-fpm.d/www.disabled
   notify: restart php-fpm

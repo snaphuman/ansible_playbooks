@@ -1,4 +1,7 @@
 # Handle Web services
 
-- name: restart php-fpm unit service
+- name: restart php-fpm
   service: name=php-fpm state=restarted
+
+- name: restart nginx
+  service: name=nginx state=restarted

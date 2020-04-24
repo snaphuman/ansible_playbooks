@@ -3,12 +3,12 @@ all:
     webservers:
       hosts:
         vm_apps_crc:
-          ansible_host: 52.170.254.161
+          ansible_host: 10.0.1.4 
           ansible_user: webmaster
     dbservers:
       hosts:
         vm_dbs_crc:
-          ansible_host: 52.170.254.37
+          ansible_host: 10.0.1.12
           ansible_user: webmaster
     localdev:
       hosts:

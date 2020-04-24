@@ -23,10 +23,28 @@
     - php-mbstring
     - php-mysql
     - php-xml
+    - php-mcrypt
+    - php-soap
+    - php-cli
+    - php-common 
+    - php-json
+    - php-mysqlnd
+    - php-pdo
+    - php-process
+    - php-xml
+    - php-pdo_mysql
+    - php-dom
+    - php-mysqli
+    - php-bcmath
+    - php-opcache
+    - php-tokenizer
 
 - name: Apply drupal configuration file for nginx
   template: src=nginx.drupal.conf.j2 dest=/etc/nginx/conf.d/{{ item.name }}.conf
   with_items: "{{ applications }}"
+  notify: 
+    - restart nginx
+    - restart php-fpm
 
 - name: Create nginx logs directory for apps
   file:

@@ -2,3 +2,11 @@
 
 - name: enable incoming ports for a service
   firewalld: port=80/tcp permanent=true state=enabled immediate=yes
+
+- name: enable incoming ports for specific apps
+  firewalld: 
+    port: "{{ item.port }}/tcp" 
+    permanent: true 
+    state: enabled 
+    immediate: yes
+  with_items: "{{ applications }}"

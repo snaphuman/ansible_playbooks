@@ -3,3 +3,8 @@
 
 - name: restart ntp
   service: name=ntpd state=restarted
+
+- name: yum-clean-metadata
+  command: yum clean metadata
+  args:
+    warn: no

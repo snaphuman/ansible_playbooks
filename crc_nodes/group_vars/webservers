@@ -1,5 +1,4 @@
 
-temp_dir: /tmp
 git_version: 2.26.0
 git_prefix: /usr/local/git
 git_binary_dir: "{{ temp_dir }}/git-{{ git_version }}"

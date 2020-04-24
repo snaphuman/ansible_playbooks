@@ -1,6 +1,8 @@
 ---
 # Global variables applicable to all hosts
 
+temp_dir: /tmp
+
 ntpserver0: 2.co.pool.ntp.org
 ntpserver1: 0.south-america.pool.ntp.org
 ntpserver2: 2.south-america.pool.ntp.org 
@@ -16,13 +18,8 @@ applications:
     dbname: "{{ lookup('env', 'VM_POSTDATA_DB_NAME') }}"
     dbuser: "{{ lookup('env', 'VM_POSTDATA_DB_USER') }}"
     upasswd: "{{ lookup('env', 'VM_POSTDATA_DB_PASSWD') }}"
-    host: "52.170.254.37"
-  - name: drupal 
-    site_env: test
-    path: /mnt/resources/webapps/drupal
-    repository: https://github.com/drupal/drupal
-    branch: test
-    dbname: "{{ lookup('env', 'VM_DRUPAL_DB_NAME') }}"
-    dbuser: "{{ lookup('env', 'VM_DRUPAL_DB_USER') }}"
-    upasswd: "{{ lookup('env', 'VM_DRUPAL_DB_PASSWD') }}"
-    host: "52.170.254.37"
+    source_dump_folder: "{{ lookup('env', 'VM_POSTDATA_SOURCE_DUMP_FOLDER') }}"
+    source_dump_file: "{{ lookup('env', 'VM_POSTDATA_SOURCE_DUMP_FILE') }}"
+    source_host: "zoque"
+    host: "10.0.1.12"
+    port: 8080
