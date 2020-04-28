@@ -1,0 +1,8 @@
+# tasks for the configuration of Drush for Drupal websites
+
+- include: install_composer.yml
+  tags: [composer]
+  when: inventory_hostname in groups['webservers']
+- include: install_drush.yml
+  tags: [drush]
+  when: inventory_hostname in groups['webservers']

@@ -9,6 +9,11 @@ ntpserver2: 2.south-america.pool.ntp.org
 
 app_token: "{{  lookup('env', 'VM_POSTDATA_APP_TOKEN') }}"
 
+composer_hash: e0012edf3e80b6978849f5eff0d4b4e4c79ff1609dd1e613307e16318854d24ae64f26d17af3ef0bf7cfb710ca74755a
+
+drush_composer_version: "~8.0"
+drush_composer_path: /usr/local/bin/drush
+
 applications:
   - name: postdata
     type: drupal7
