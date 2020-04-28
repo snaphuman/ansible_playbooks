@@ -1,33 +1,42 @@
-- name: ensure if default directory exists
+- name: Ensure if default directory exists
   file: 
     path: "{{ item.path }}/sites/default/files"
     state: directory
     owner: webmaster
     group: webmaster
+    mode: '0775'
   with_items: "{{ applications }}"
 
-- name: Copy drupal config file
+- name: Copy Drupal config file
   template:
     src: drupal.7.settings.php.j2 
     dest: "{{ item.path }}/sites/default/settings.php"
     owner: webmaster
     group: webmaster
+    mode: '0444'
   with_items: "{{ applications }}"
 
-- name: Set SELinux policy for the drupal site directory
+- name: Set SELinux policy for the Drupal site directory
   sefcontext:
     target: "{{ item.path }}(/.*)?"
     setype: httpd_sys_content_t
     state: present
   with_items: "{{ applications }}"
 
-- name: Set SELinux policy for the drupal site content generated directory
+- name: Set SELinux policy for the Drupal site default folder
   sefcontext:
     target: "{{ item.path }}/sites/default(/.*)?"
     setype: httpd_sys_rw_content_t
     state: present
   with_items: "{{ applications }}"
   
+- name: Set SELinux policy for the Drupal site content generated directory
+  sefcontext:
+    target: "{{ item.path }}/sites/default/files(/.*)?"
+    setype: httpd_sys_rw_content_t
+    state: present
+  with_items: "{{ applications }}"
+
 - name: Set SElinux on all the site files
   command: restorecon -Rv {{ item.path }}
   with_items: "{{ applications }}"

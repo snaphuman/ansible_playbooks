@@ -37,8 +37,8 @@
       tags:
         - postdata
 
-- name: manage database operations
-  hosts: dbservers, localdev
+- name: manage deployment database operations
+  hosts: dbservers, !localdev, !webservers
   roles:
     - role: deploy/postdata/db
       tags:

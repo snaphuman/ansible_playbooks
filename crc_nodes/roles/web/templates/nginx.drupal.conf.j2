@@ -1,6 +1,6 @@
 server {
     listen {{ item.port }} default_server;
-    server_name {{ item.name }}.{{ item.site_env }};
+    server_name {{ item.name }}.{{ env }};
     root /mnt/resources/webapps/{{ item.name }};
 
     access_log /var/log/nginx/{{ item.name }}/access.log;

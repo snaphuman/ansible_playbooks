@@ -248,9 +248,9 @@ $databases = array();
 
 $databases['default']['default'] = array(
   'driver' => 'mysql',
-  'database' => {{ item.dbname }},
-  'username' => {{ item.dbuser}},
-  'password' => {{ item.upasswd }},
+  'database' => '{{ item.dbname }}',
+  'username' => '{{ item.dbuser}}',
+  'password' => '{{ item.upasswd }}',
   'host' => '{{ item.host }}',
   'prefix' => '',
   'collation' => 'utf8_general_ci',

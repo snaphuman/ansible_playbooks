@@ -1,4 +1,7 @@
 # Main tasks for app deployment
 
 - include: deploy_site.yml
-- include: config_site.yml
+- include: config_drupal7_site.yml
+  tags: [drupal7]
+  when: item.type == "drupal7"
+  with_items: "{{ applications }}"

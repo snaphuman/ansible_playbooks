@@ -4,5 +4,6 @@
   git:
     repo: "{{ item.repository }}"
     dest: "{{ item.path }}"
+    version: "{{ item.version }}"
   with_items: "{{ applications }}"
   become: webmaster

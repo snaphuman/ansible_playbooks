@@ -5,3 +5,4 @@
 - include: configure_firewall.yml
 - include: copy_files.yml
 - include: install_git.yml
+  tags: [install_git]
