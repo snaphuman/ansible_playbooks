@@ -1,0 +1,45 @@
+- name: Create volume group on top of data disk
+  lvg:
+    vg: vg.data
+    pvs: /dev/sdc
+
+- name: Create logical volumes accordingly to schema
+  lvol:
+    vg: vg.data
+    lv: "{{ item.name }}"
+    size: "{{ item.size }}"
+    state: "{{ item.state }}"
+    shrink: "{{ item.shrink}}"
+    force: "{{ item.force }}"
+  with_items:
+    - { name: apps, size: 50%VG, state: present, shrink: no, force: no }
+    - { name: backups, size: 30%VG, state: present, shrink: no, force: no}
+    - { name: misc, size: 100%FREE, state: present, shrink: no, force: no }
+
+#- name: get facts of host devices
+#  debug:
+#    msg: "{{ hostvars[inventory_hostname]['ansible_devices']['sdc']['links']['masters'] }}"
+
+- name: Configure filesystem for logical volumes
+  filesystem:
+    fstype: ext4
+    dev: "/dev/{{ item }}"
+  with_items: "{{ hostvars[inventory_hostname]['ansible_devices']['sdc']['links']['masters'] }}"
+
+- name: Create directory mountpoints
+  file:
+    path: "/{{ item }}"
+    owner: webmaster
+    group: webmaster
+    mode: "0755"
+    state: directory
+  with_items: ["apps", "backups", "misc"]
+
+- name: Mount the created filesystems
+  mount:
+    path: "/{{ item }}"
+    src: "/dev/vg.data/{{ item }}"
+    fstype: ext4
+    opts: rw,nosuid,noexec
+    state: mounted
+  with_items: ["apps", "backups", "misc"]

@@ -1,5 +1,12 @@
 # This playbook deploys the application stack for CMS's
 
+- name: Apply logical volumes scheme to data disks
+  hosts: prod
+  roles:
+    - role: data_store
+      tags:
+        - set_lvm
+
 - name: apply common configuration to all nodes
   hosts: all, !localdev
   remote_user: root
