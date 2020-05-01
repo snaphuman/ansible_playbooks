@@ -11,14 +11,17 @@
     state: "{{ item.state }}"
     shrink: "{{ item.shrink}}"
     force: "{{ item.force }}"
+  when:
+    - ansible_lvm["vgs"]["vg.data"]["free_g"] != "0"
   with_items:
     - { name: apps, size: 50%VG, state: present, shrink: no, force: no }
-    - { name: backups, size: 30%VG, state: present, shrink: no, force: no}
+    - { name: backups, size: 30%VG, state: present, shrink: no, force: no }
     - { name: misc, size: 100%FREE, state: present, shrink: no, force: no }
 
 #- name: get facts of host devices
 #  debug:
-#    msg: "{{ hostvars[inventory_hostname]['ansible_devices']['sdc']['links']['masters'] }}"
+#    #msg: "{{ hostvars[inventory_hostname]['ansible_devices']['sdc']['links']['masters'] }}"
+#    #msg: "{{ ansible_lvm }}"
 
 - name: Configure filesystem for logical volumes
   filesystem:

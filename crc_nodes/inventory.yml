@@ -1,23 +1,25 @@
 
 [webservers]
-vm_apps_crc ansible_host=10.0.1.4 ansible_user=webmaster
-vm-postdata ansible_host=12.0.1.8 ansible_user=webmaster
+vm-apps-crc ansible_host=10.0.1.4 ansible_user=webmaster
+vm-postdata ansible_host=12.0.1.13 ansible_user=webmaster
 
 [dbservers]
-vm_dbs_crc ansible_host=10.0.1.12 ansible_user=webmaster
+vm-dbs-crc ansible_host=10.0.1.12 ansible_user=webmaster
+vm-db-postdata ansible_host=12.0.1.9 ansible_user=webmaster
 
 [test]
-vm_apps_crc
-vm_dbs_crc
+vm-apps-crc
+vm-dbs-crc
 
 [test:vars]
 env=test
 
 [prod]
 vm-postdata
+vm-db-postdata
 
 [prod:vars]
 env=prod
 
 [localdev]
-zoque ansible_host=192.168.200.14 ansible_user="{{ lookup('env', 'VM_ZOQUE_USER') }}" ansible_sudo_pass="{{ lookup('env', 'VM_ZOQUE_SUDO_PASSWD') }}"
+zoque ansible_host="{{ lookup('env', 'VM_ZOQUE_HOST_IP') }}" ansible_user="{{ lookup('env', 'VM_ZOQUE_USER') }}" ansible_sudo_pass="{{ lookup('env', 'VM_ZOQUE_SUDO_PASSWD') }}"

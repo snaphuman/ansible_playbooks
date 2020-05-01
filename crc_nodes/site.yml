@@ -1,7 +1,7 @@
 # This playbook deploys the application stack for CMS's
 
 - name: Apply logical volumes scheme to data disks
-  hosts: prod
+  hosts: webservers, dbservers
   roles:
     - role: data_store
       tags:
