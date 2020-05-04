@@ -6,7 +6,7 @@
   with_items: "{{ applications }}"
 
 - name: Sync files between local to remote
-  shell: "rsync -avzP -e 'ssh' {{ item.source_dump_folder }}/{{ item.source_dump_file }} webmaster@{{ item.host }}:{{ temp_dir }}"
+  shell: "rsync -avzP -e 'ssh' {{ item.source_dump_folder }}/{{ item.source_dump_file }} webmaster@{{ item.db_host }}:{{ temp_dir }}"
   delegate_to: "{{ item.source_host }}"
   become: snaphuman
   with_items: "{{ applications }}"
@@ -16,6 +16,6 @@
   mysql_db:
     name: "{{ item.dbname }}"
     state: import
-    target: /tmp/dkan-postdata-20200406.sql
+    target: "{{ temp_dir }}/{{ item.source_dump_file }}"
   with_items: "{{ applications }}"
   when: item.name == "postdata"

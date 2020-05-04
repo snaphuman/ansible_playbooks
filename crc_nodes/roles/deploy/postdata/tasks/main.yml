@@ -1,6 +1,9 @@
 # Specific postdata deploy tasks
 
 - name: Syncronice files from dev to postdata
-  shell: "rsync -avzP -e 'ssh' {{ lookup('env', 'VM_ZOQUE_HOME') }}/Code/drupal/postdata/www/sites/default/files webmaster@10.0.1.4:/mnt/resources/webapps/postdata/sites/default"
+  shell: rsync -avzP -e 'ssh' {{ lookup('env', 'VM_ZOQUE_HOME') }}/Code/drupal/postdata/www/sites/default/files {{ item.file_host }}:/apps/postdata/www/sites/default
   delegate_to: zoque
   become: snaphuman
+  loop: "{{ applications }}"
+  when: item.name == 'postdata'
+
