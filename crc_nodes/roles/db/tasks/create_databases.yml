@@ -1,0 +1,23 @@
+
+- name: Debug database connection params remember to source the database environment vars
+  debug:
+    msg: "dbname {{ item.dbname }} dbuser {{ item.dbuser }} upasswd {{ item.upasswd }}"
+  loop: "{{ applications }}"
+  when: item.name in apps
+
+- name: Create drupal database
+  mysql_db: 
+    name: "{{ item.dbname }}"
+#    login_user: "{{ item.dbuser }}"
+#    login_password: "{{ item.upasswd }}"
+    state: present
+  loop: "{{ applications }}"
+  when: item.name in apps
+
+- name: Create drupal database user
+  mysql_user: name={{ item.dbuser }} password={{ item.upasswd }} priv={{ item.dbname }}.*:ALL host='%' state=present
+  loop: "{{ applications }}"
+  when: item.name in apps
+
+- name: Start MariaDB unit
+  service: name=mariadb state=started enabled=yes
