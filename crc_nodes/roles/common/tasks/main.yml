@@ -12,6 +12,8 @@
 - name: Install common dependencies
   yum: name="{{ item }}" state=installed
   loop:
+    - policycoreutils
+    - policycoreutils-python
     - libselinux-python
     - libsemanage-python
     - firewalld

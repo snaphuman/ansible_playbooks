@@ -4,12 +4,10 @@
 
 - name: Create apps directory inside resources partition
   file:
-    path: /mnt/resources/webapps/{{ item.name }}
+    path: "/apps/{{ item.name }}/www"
     state: directory
     mode: '0755'
     owner: webmaster
     group: webmaster
   with_items: "{{ applications }}"
 
-- name: Create test file to verify php server settings
-  template: src=info.php.j2 dest=/mnt/resources/webapps/info.php

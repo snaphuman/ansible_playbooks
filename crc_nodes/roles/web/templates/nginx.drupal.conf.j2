@@ -1,10 +1,10 @@
 server {
     listen {{ item.port }} default_server;
     server_name {{ item.name }}.{{ env }};
-    root /mnt/resources/webapps/{{ item.name }};
+    root /apps/{{ item.name }}/www;
 
-    access_log /var/log/nginx/{{ item.name }}/access.log;
-    error_log /var/log/nginx/{{ item.name}}/error.log;
+    access_log /misc/logs/{{ item.name }}/access.log;
+    error_log /misc/logs/{{ item.name}}/error.log;
 
     location = /favicon.ico {
         log_not_found off;

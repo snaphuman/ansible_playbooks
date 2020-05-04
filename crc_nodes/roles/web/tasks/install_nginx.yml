@@ -39,19 +39,34 @@
     - php-opcache
     - php-tokenizer
 
+- name: Create nginx logs directory for apps
+  file:
+    path: /misc/logs/{{ item.name }}
+    state: directory
+    owner: webmaster
+    group: webmaster
+    mode: '0755'
+  loop: "{{ applications }}"
+  when: item.name in apps
+
 - name: Apply drupal configuration file for nginx
   template: src=nginx.drupal.conf.j2 dest=/etc/nginx/conf.d/{{ item.name }}.conf
-  with_items: "{{ applications }}"
+  loop: "{{ applications }}"
+  when: item.name in apps
   notify: 
     - restart nginx
     - restart php-fpm
 
-- name: Create nginx logs directory for apps
-  file:
-    path: /var/log/nginx/{{ item.name }}
-    state: directory
-    mode: '0755'
-  with_items: "{{ applications }}"
+- name: Set SELinux policy to allow nginx write to external log folder
+  sefcontext:
+    target: "/misc/logs/{{ item.name }}(/.*)?"
+    setype: var_log_t
+    state: present
+  loop: "{{ applications }}"
+  when: item.name in apps
+
+- name: Reset security context to new logs directory 
+  command: restorecon -Rv /misc/logs
 
 - name: Configure SELinux to allow nginx remote connections
   seboolean:

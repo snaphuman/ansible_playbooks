@@ -1,9 +1,14 @@
 # Deploy tasks
 
+- name: Debug vars
+  debug:
+    msg: "{{ applications }}"
+
 - name:  Fetch source code from git
   git:
     repo: "{{ item.repository }}"
     dest: "{{ item.path }}"
     version: "{{ item.version }}"
-  with_items: "{{ applications }}"
+  loop: "{{ applications }}"
+  when: item.name in apps
   become: webmaster
