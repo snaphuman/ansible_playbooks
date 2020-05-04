@@ -1,11 +1,11 @@
 
 [webservers]
-vm-apps-crc ansible_host=10.0.1.4 ansible_user=webmaster
-vm-postdata ansible_host=12.0.1.13 ansible_user=webmaster
+vm-apps-crc ansible_host=10.0.1.4 ansible_user=webmaster apps=[postdata,drupal]
+vm-postdata ansible_host=12.0.1.13 ansible_user=webmaster apps=[postdata]
 
 [dbservers]
-vm-dbs-crc ansible_host=10.0.1.12 ansible_user=webmaster
-vm-db-postdata ansible_host=12.0.1.9 ansible_user=webmaster
+vm-dbs-crc ansible_host=10.0.1.12 ansible_user=webmaster apps=[postdata,drupal]
+vm-db-postdata ansible_host=12.0.1.9 ansible_user=webmaster apps=[postdata]
 
 [test]
 vm-apps-crc
