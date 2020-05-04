@@ -21,5 +21,10 @@ vm-db-postdata
 [prod:vars]
 env=prod
 
+[jmeter_slaves]
+vm-testing1 ansible_host=12.0.1.10 ansible_user=testing
+vm-testing2 ansible_host=12.0.1.11 ansible_user=testing
+vm-testing3 ansible_host=12.0.1.12 ansible_user=testing
+
 [localdev]
 zoque ansible_host="{{ lookup('env', 'VM_ZOQUE_HOST_IP') }}" ansible_user="{{ lookup('env', 'VM_ZOQUE_USER') }}" ansible_sudo_pass="{{ lookup('env', 'VM_ZOQUE_SUDO_PASSWD') }}"

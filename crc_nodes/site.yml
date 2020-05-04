@@ -53,3 +53,10 @@
         - postdata_db
       vars:
         - operation: "import" # use import or export"
+
+- name: deploy tests and stats
+  hosts: vm-postdata
+  roles:
+    - role: testing
+      tags:
+        - testing

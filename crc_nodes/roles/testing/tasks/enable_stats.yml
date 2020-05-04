@@ -1,0 +1,30 @@
+
+- name: Install dstat program
+  yum:
+    name: dstat
+    state: present
+
+- name: Create stats directory
+  file:
+    path: /misc/stats
+    state: directory
+    owner: webmaster
+    group: webmaster
+    mode: 0755
+
+- name: Verify if there is dstat process running
+  ignore_errors: yes
+  shell: "ps -few | grep '/usr/bin/dstat' | awk '{print $2}'"
+  register: running_processes
+
+- name: Debug running processes
+  debug:
+    msg: "{{ running_processes }}"
+
+- name: Start logging stats from machine
+  shell: |
+    cd /misc/stats
+    nohup dstat --time --cpu --disk --sys --load --proc --mem --top-cpu --output report-"`date +%m%d%Y-%H%M`".csv &
+  become: webmaster
+  when: running_processes.stdout_lines|length <= 2
+
