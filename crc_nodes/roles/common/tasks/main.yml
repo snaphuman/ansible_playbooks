@@ -1,14 +1,6 @@
 ---
 # This playbook contains comon plays that will be run in all nodes
 
-- name: Configure timezone
-  timezone:
-    name: America/Bogota
-
-- name: Install ntp
-  yum: name=ntp state=present
-  tags: ntp
-
 - name: Install common dependencies
   yum: name="{{ item }}" state=installed
   loop:
@@ -18,21 +10,12 @@
     - libsemanage-python
     - firewalld
 
-- name: Ntp configuration
-  template: src=ntp.conf.j2 dest=/etc/ntp.conf
-  tags: ntp
-  notify: restart ntp
-
-- name: Start ntp service
-  service: name=ntpd state=started enabled=yes
-  tags: ntp
-
-- name: Start firewalld unit service
-  service: name=firewalld state=started enabled=yes
-
 - name: Enable Remi release repo
   yum:
     name: https://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
   notify: yum-clean-metadata
 
+- include: configure_ntp.yml
+  tags: [ntp]
+- include: configure_firewall.yml

@@ -1,0 +1,4 @@
+
+- name: Start firewalld unit service
+  service: name=firewalld state=started enabled=yes
+
