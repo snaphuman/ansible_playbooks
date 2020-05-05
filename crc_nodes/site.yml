@@ -54,9 +54,16 @@
       vars:
         - operation: "import" # use import or export"
 
-- name: deploy tests and stats
+- name: enable_stats
   hosts: vm-postdata
   roles:
-    - role: testing
+    - role: testing/stats
       tags:
-        - testing
+        - enable_stats
+
+- name: enable jmeter
+  hosts: jmeter_slaves
+  roles:
+    - role: testing/jmeter
+      tags:
+        - enable_jmeter

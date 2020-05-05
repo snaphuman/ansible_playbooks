@@ -1,0 +1,54 @@
+
+
+- name: Install Java 8 OpenJDK
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+
+- name: Fetch and unarchive Jmeter
+  unarchive:
+    src: https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.2.1.tgz
+    dest: /home/testing
+    remote_src: yes
+  become: testing
+
+- name: Create symbolic link for jmeter home
+  file:
+    src: /home/testing/apache-jmeter-5.2.1
+    dest: /home/testing/jmeter
+    state: link
+    owner: testing
+    group: testing
+    mode: 0755
+  become: testing
+
+- name: Setup environment
+  lineinfile:
+    path: /home/testing/.bashrc
+    regexp: "^/testing/jmeter/bin"
+    line: "export PATH=$PATH:/home/testing/jmeter/bin"
+  become: testing
+
+- name: Source exported PATH var
+  shell: "source /home/testing/.bashrc"
+
+- name: Disable RMI
+  lineinfile:
+    path: jmeter/bin/jmeter.properties
+    regexp: "^server.rmi.ssl.disable"
+    line: "server.rmi.ssl.disable=true"
+  become: testing
+
+- name: Verify if there is jmeter process running
+  ignore_errors: yes
+  shell: "ps -few | grep 'jmeter' | awk '{print $2}'"
+  register: running_processes
+
+- name: Debug running processes
+  debug:
+    msg: "{{ running_processes }}"
+
+- name: Start jmeter server
+  shell: nohup jmeter/bin/jmeter-server &
+  when: running_processes.stdout_lines|length <= 2
+

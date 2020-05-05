@@ -1,8 +1,0 @@
-
-- include: enable_stats.yml
-  tags: [enable_stats]
-
-#- include: install_jmeter.yml
-#  tags: [install_jmeter]
-
-#- include: configure_jmeter.yml
