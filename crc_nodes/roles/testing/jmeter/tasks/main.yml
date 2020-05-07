@@ -35,8 +35,11 @@
 - name: Disable RMI
   lineinfile:
     path: jmeter/bin/jmeter.properties
-    regexp: "^server.rmi.ssl.disable"
-    line: "server.rmi.ssl.disable=true"
+    regexp: "^{{ item.exp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - {exp: server.rmi.ssl.disable, line: "server.rmi.ssl.disable=true"}
+    - {exp: server.rmi.create, line: "server.rmi.create=false"}
   become: testing
 
 - name: Verify if there is jmeter process running
@@ -46,9 +49,10 @@
 
 - name: Debug running processes
   debug:
-    msg: "{{ running_processes }}"
+    msg: "{{ running_processes.stdout_lines|length }}"
 
 - name: Start jmeter server
-  shell: nohup jmeter/bin/jmeter-server &
-  when: running_processes.stdout_lines|length <= 2
-
+  shell: nohup /home/testing/jmeter/bin/jmeter-server &
+  when: 
+    - running_processes.stdout_lines|length <= 2 
+    - slave|bool == true

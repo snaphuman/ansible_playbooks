@@ -62,7 +62,7 @@
         - enable_stats
 
 - name: enable jmeter
-  hosts: jmeter_slaves
+  hosts: jmeter_nodes
   roles:
     - role: testing/jmeter
       tags:
