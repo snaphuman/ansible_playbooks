@@ -39,7 +39,6 @@
     line: "{{ item.line }}"
   with_items:
     - {exp: server.rmi.ssl.disable, line: "server.rmi.ssl.disable=true"}
-    - {exp: server.rmi.create, line: "server.rmi.create=false"}
   become: testing
 
 - name: Verify if there is jmeter process running
