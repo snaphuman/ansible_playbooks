@@ -1,6 +1,12 @@
 server {
-    listen {{ item.port }} default_server;
+    listen {{ item.port }} {% if item.port == 443 %}ssl{% endif %} {% if item.default_server is defined %}default_server{% endif %};
+
+    {% if item.server_name is not defined or item.port != 'prod' %}
     server_name {{ item.name }}.{{ env }};
+    {% else %}
+    server_name {{ item.server_name }}
+    {% endif %}
+
     root /apps/{{ item.name }}/www;
 
     access_log /misc/logs/{{ item.name }}/access.log;
