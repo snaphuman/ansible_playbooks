@@ -18,4 +18,7 @@
 
 - include: configure_ntp.yml
   tags: [ntp]
+
 - include: configure_firewall.yml
+
+- include: default_selinux.yml

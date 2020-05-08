@@ -1,0 +1,13 @@
+
+- name: Install setools console
+  yum: name=setools-console state=present
+
+- name: Set SELinux label to misc directory
+  sefcontext:
+    target: "/misc"
+    setype: default_t
+    state: present
+
+- name: Reset security context to misc directory 
+  command: "restorecon -Rv /misc"
+

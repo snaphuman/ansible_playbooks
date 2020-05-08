@@ -6,6 +6,8 @@ server {
     access_log /misc/logs/{{ item.name }}/access.log;
     error_log /misc/logs/{{ item.name}}/error.log;
 
+    client_max_body_size 80M;
+
     location = /favicon.ico {
         log_not_found off;
         access_log off;

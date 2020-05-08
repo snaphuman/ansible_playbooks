@@ -7,8 +7,8 @@
       tags:
         - set_lvm
 
-- name: apply common configuration to all nodes
-  hosts: all, !localdev
+- name: apply common configuration to webservers and dbservers
+  hosts: webservers, dbservers
   remote_user: root
   become: yes
 

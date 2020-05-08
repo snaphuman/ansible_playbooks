@@ -13,6 +13,7 @@
 
 - name: Install regular expression library required by php-mbstring
   yum: name=https://rpmfind.net/linux/remi/enterprise/7/remi/x86_64/oniguruma5-6.9.4-1.el7.remi.x86_64.rpm state=present
+  tags: mbstring
 
 - name: Install nginx, php-fpm and php
   yum: name="{{ item }}" state=present
@@ -60,13 +61,15 @@
 - name: Set SELinux policy to allow nginx write to external log folder
   sefcontext:
     target: "/misc/logs/{{ item.name }}(/.*)?"
-    setype: var_log_t
+    setype: httpd_log_t
     state: present
   loop: "{{ applications }}"
   when: item.name in apps
 
 - name: Reset security context to new logs directory 
-  command: restorecon -Rv /misc/logs
+  command: "restorecon -Rv /misc/logs/{{ item.name }}"
+  loop: "{{ applications }}"
+  when: item.name in apps
 
 - name: Configure SELinux to allow nginx remote connections
   seboolean:
