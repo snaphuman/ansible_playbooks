@@ -30,7 +30,7 @@ applications:
     source_host: "zoque"
     file_host: "{% if env == 'test' %}webmaster@10.0.1.4{% elif env == 'prod' %}webmaster@12.0.1.13{% endif %}"
     db_host: "{% if env == 'test' %}10.0.1.12{% elif env == 'prod' %}12.0.1.9{% endif %}"
-    port: "{% if env == 'prod' %}8080{% elif env == 'test' %}8080{% endif %}"
+    port: "{% if env == 'prod' %}443{% elif env == 'test' %}8080{% endif %}"
     server_name: postdata.gov.co
     default_server: true
   - name: drupal

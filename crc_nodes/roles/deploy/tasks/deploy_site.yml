@@ -9,6 +9,6 @@
     repo: "{{ item.repository }}"
     dest: "{{ item.path }}"
     version: "{{ item.version }}"
+  become: webmaster
   loop: "{{ applications }}"
   when: item.name in apps
-  become: webmaster

@@ -1,10 +1,12 @@
 server {
-    listen {{ item.port }} {% if item.port == 443 %}ssl{% endif %} {% if item.default_server is defined %}default_server{% endif %};
+    listen {{ item.port }} {% if item.default_server is defined %}default_server{% endif %} {% if item.port == '443' %}ssl{% endif %};
 
-    {% if item.server_name is not defined or item.port != 'prod' %}
+    {% if item.server_name is not defined or item.port != '443' %}
     server_name {{ item.name }}.{{ env }};
     {% else %}
-    server_name {{ item.server_name }}
+    server_name {{ item.server_name }};
+    ssl_certificate /etc/nginx/ssl/postdata.cer;
+    ssl_certificate_key /etc/nginx/ssl/postdata.key;
     {% endif %}
 
     root /apps/{{ item.name }}/www;
