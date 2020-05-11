@@ -20,6 +20,7 @@
   loop:
     - nginx
     - php
+    - php-gd
     - php-fpm
     - php-mbstring
     - php-mysql
