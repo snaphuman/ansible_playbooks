@@ -15,8 +15,8 @@ vm-dbs-crc
 env=test
 
 [prod]
-vm-postdata
-vm-db-postdata
+vm-postdata apps=[postdata]
+vm-db-postdata apps=[postdata]
 
 [prod:vars]
 env=prod

@@ -2,6 +2,8 @@
 
 - include: install_nginx.yml
 - include: configure_php-fpm.yml
+- include: configure_php.yml
+  tags: [configure_php]
 - include: configure_firewall.yml
 - include: copy_files.yml
 - include: install_git.yml

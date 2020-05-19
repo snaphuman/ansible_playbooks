@@ -1,3 +1,7 @@
+- name: Install mariadb client to allow drush ops
+  yum:
+    name: mariadb
+    state: present
 
 - name: Ensure Drush is installed globally
   composer:
