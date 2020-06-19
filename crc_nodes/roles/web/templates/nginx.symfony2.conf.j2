@@ -1,0 +1,37 @@
+server {
+    listen {{ item.port }} {% if item.default_server is defined %}default_server{% endif %} {% if item.port == '443' %}ssl{% endif %};
+
+    {% if item.server_name is not defined or item.port != '443' %}
+    server_name {{ item.name }}.{{ env }};
+    {% endif %}
+
+    root /apps/{{ item.name }}/www/web;
+
+    access_log /misc/logs/{{ item.name }}/access.log;
+    error_log /misc/logs/{{ item.name}}/error.log;
+
+    rewrite ^/app\.php/?(.*)$ /$1 permanent;
+
+    client_body_buffer_size 10K;
+    client_header_buffer_size 1k;
+    client_max_body_size 20M;
+    client_header_timeout 9999s;
+    client_body_timeout 9999s;
+
+    location / {
+        index app.php;
+      	try_files $uri @rewriteapp;
+    }
+
+    location @rewriteapp {
+     	rewrite ^(.*)$ /app.php/$1 last;
+    }
+
+    location ~ ^/(app|app_dev|config)\.php(/|$) {
+        fastcgi_pass unix:/var/run/php-fpm/php7.0-fpm.sock;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+       	include fastcgi_params;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param  HTTPS off;
+    } 
+}
