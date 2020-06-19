@@ -5,6 +5,8 @@
 - include: configure_php.yml
   tags: [configure_php]
 - include: configure_firewall.yml
+- include: configure_selinux.yml
+  tags: [configure_selinux]
 - include: copy_files.yml
 - include: install_git.yml
   tags: [install_git]

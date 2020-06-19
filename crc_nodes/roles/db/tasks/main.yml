@@ -1,6 +1,7 @@
 # This playbook will install mariadb and configure database
 
 - include: install_mariadb.yml
+- include: create_databases.yml
+  tags: [create_databases]
 #- include: secure_installation.yml
 #  when: (env == "prod") or (ansible_hostname == "vm-db-postdata")
-- include: create_databases.yml

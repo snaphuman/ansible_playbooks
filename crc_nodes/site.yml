@@ -13,32 +13,40 @@
   become: yes
 
   roles:
-    - common
+    - role: common
+      tags:
+        - common_plays
 
 - name: configure the webservers
   hosts: webservers, !localdev
   remote_user: root
 
   roles:
-    - web
-    - drush
+    - role: web
+      tags:
+        - web_plays
+    - role: drush
+      tags:
+        - drush_plays
 
 - name: configure database servers
   hosts: dbservers, !localdev
   remote_user: root
 
   roles:
-    - db
+    - role: db
+      tags:
+        - db_plays
 
-- name: deploy applications
+- name: deploy applications means to fetch and configure
   hosts: webservers, !localdev
   remote_user: root
   roles:
     - role: deploy
       tags:
-        - deploy
+        - deploy_plays
 
-- name: sync files
+- name: sync files and databases
   hosts: webservers, localdev
   roles: 
     - role: deploy/postdata
