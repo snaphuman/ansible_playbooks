@@ -44,3 +44,22 @@ applications:
     upasswd: "{% if env == 'test' %}{{ lookup('env', 'VM_DRUPAL_DB_TEST_PASSWD') }}{% endif %}"
     db_host: "{% if env == 'test'  %}10.0.1.12{% endif %}"
     port: 8081
+  - name: portal_crc 
+    type: symfony2
+    version: "{% if env == 'test' %}test{% endif %}"
+    path: /apps/portal_crc/www
+    repository: https://oauth2:{{ app_token }}@gitlab.com/portal_crc/symfony_cms.git
+    dbname: "{{ lookup('env', 'VM_PORTAL_CRC_DB_NAME') }}_{{ env }}"
+    dbuser: "{{ lookup('env', 'VM_PORTAL_CRC_DB_USER') }}_{{ env }}"
+    file_host: "{% if env == 'test' %}webmaster@10.0.1.4{% endif %}"
+    upasswd: "{% if env == 'test' %}{{ lookup('env', 'VM_PORTAL_CRC_DB_TEST_PASSWD') }}{% endif %}"
+    db_host: "{% if env == 'test'  %}10.0.1.12{% endif %}"
+    port: 8082
+    source_dump_folder: "{{ lookup('env', 'VM_PORTAL_CRC_SOURCE_DUMP_FOLDER') }}"
+    source_dump_file: "{{ lookup('env', 'VM_PORTAL_CRC_SOURCE_DUMP_FILE') }}"
+    source_host: "zoque"
+    file_host: "{% if env == 'test' %}webmaster@10.0.1.4{% elif env == 'prod' %}webmaster@12.0.1.13{% endif %}"
+    port: "{% if env == 'prod' %}443{% elif env == 'test' %}8082{% endif %}"
+    server_name: crcom.gov.co
+    default_server: false 
+    source_host: "zoque"

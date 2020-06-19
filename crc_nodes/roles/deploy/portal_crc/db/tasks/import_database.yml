@@ -1,0 +1,27 @@
+
+- name: Importing database
+  debug:
+    msg: "importing {{ item.source_dump_file }} to {{ item.dbname }}"
+  with_items: "{{ applications }}"
+  when: 
+    - deploy_app is defined
+    - item.name == deploy_app
+
+- name: Sync files between local to remote
+  shell: "rsync -avzP -e 'ssh' {{ item.source_dump_folder }}/{{ item.source_dump_file }} webmaster@{{ item.db_host }}:{{ temp_dir }}"
+  delegate_to: "{{ item.source_host }}"
+  become: snaphuman
+  with_items: "{{ applications }}"
+  when: 
+    - deploy_app is defined
+    - item.name == deploy_app
+
+- name: restore dump to database
+  mysql_db:
+    name: "{{ item.dbname }}"
+    state: import
+    target: "{{ temp_dir }}/{{ item.source_dump_file }}"
+  with_items: "{{ applications }}"
+  when: 
+    - deploy_app is defined
+    - item.name == deploy_app

@@ -44,6 +44,9 @@
     - role: deploy/postdata
       tags:
         - postdata
+    - role: deploy/portal_crc
+      tags:
+        - portal_crc
 
 - name: manage deployment database operations
   hosts: dbservers, !localdev, !webservers
@@ -51,6 +54,11 @@
     - role: deploy/postdata/db
       tags:
         - postdata_db
+      vars:
+        - operation: "import" # use import or export"
+    - role: deploy/portal_crc/db
+      tags:
+        - portal_crc_db
       vars:
         - operation: "import" # use import or export"
 
