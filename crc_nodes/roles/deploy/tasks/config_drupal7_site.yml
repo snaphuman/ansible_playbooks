@@ -6,6 +6,17 @@
     group: webmaster
     mode: '0775'
   with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.name == deploy_app
+
+- name: debug item name
+  debug:
+    msg: item.name
+  with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.name == deploy_app
 
 - name: Copy Drupal config file
   template:
@@ -15,6 +26,9 @@
     group: webmaster
     mode: '0444'
   with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.name == deploy_app
 
 - name: Set SELinux policy for the Drupal site directory
   sefcontext:
@@ -22,6 +36,9 @@
     setype: httpd_sys_content_t
     state: present
   with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.name == deploy_app
 
 - name: Set SELinux policy for the Drupal site default folder
   sefcontext:
@@ -29,6 +46,9 @@
     setype: httpd_sys_rw_content_t
     state: present
   with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.name == deploy_app
   
 - name: Set SELinux policy for the Drupal site content generated directory
   sefcontext:
@@ -36,8 +56,13 @@
     setype: httpd_sys_rw_content_t
     state: present
   with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.name == deploy_app
 
 - name: Set SElinux on all the site files
   command: restorecon -Rv {{ item.path }}
   with_items: "{{ applications }}"
-
+  when:
+   - deploy_app is defined
+   - item.name == deploy_app

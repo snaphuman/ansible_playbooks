@@ -5,5 +5,5 @@
   delegate_to: zoque
   become: snaphuman
   loop: "{{ applications }}"
-  when: item.name == 'postdata'
+  when: item.name == deploy_app
 

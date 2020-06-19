@@ -3,21 +3,27 @@
   debug:
     msg: "dbname {{ item.dbname }} dbuser {{ item.dbuser }} upasswd {{ item.upasswd }}"
   loop: "{{ applications }}"
-  when: item.name in apps
+  when:
+    - deploy_apps is defined
+    - item.name == deploy_apps
 
-- name: Create drupal database
+- name: Create application database
   mysql_db: 
     name: "{{ item.dbname }}"
 #    login_user: "{{ item.dbuser }}"
 #    login_password: "{{ item.upasswd }}"
     state: present
   loop: "{{ applications }}"
-  when: item.name in apps
+  when:
+    - deploy_apps is defined
+    - item.name == deploy_apps
 
-- name: Create drupal database user
+- name: Create application database user
   mysql_user: name={{ item.dbuser }} password={{ item.upasswd }} priv={{ item.dbname }}.*:ALL host='%' state=present
   loop: "{{ applications }}"
-  when: item.name in apps
+  when:
+    - deploy_apps is defined
+    - item.name == deploy_apps
 
 - name: Start MariaDB unit
   service: name=mariadb state=started enabled=yes

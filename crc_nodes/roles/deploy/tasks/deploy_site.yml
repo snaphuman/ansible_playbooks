@@ -2,7 +2,7 @@
 
 - name: Debug vars
   debug:
-    msg: "{{ applications }}"
+    msg: "ops for {{ deploy_app }} in {{ applications }}"
 
 - name:  Fetch source code from git
   git:
@@ -11,4 +11,6 @@
     version: "{{ item.version }}"
   become: webmaster
   loop: "{{ applications }}"
-  when: item.name in apps
+  when: 
+    - deploy_app is defined
+    - item.name == deploy_app

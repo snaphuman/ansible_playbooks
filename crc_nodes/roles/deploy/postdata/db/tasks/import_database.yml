@@ -2,7 +2,7 @@
 - name: Importing database
   debug:
     msg: "importing {{ item.source_dump_file }} to {{ item.dbname }}"
-  when: item.name == "postdata"
+  when: item.name == deploy_app
   with_items: "{{ applications }}"
 
 - name: Sync files between local to remote
@@ -10,7 +10,7 @@
   delegate_to: "{{ item.source_host }}"
   become: snaphuman
   with_items: "{{ applications }}"
-  when: item.name == "postdata"
+  when: item.name == deploy_app
 
 - name: restore dump to database
   mysql_db:
@@ -18,4 +18,4 @@
     state: import
     target: "{{ temp_dir }}/{{ item.source_dump_file }}"
   with_items: "{{ applications }}"
-  when: item.name == "postdata"
+  when: item.name == deploy_app
