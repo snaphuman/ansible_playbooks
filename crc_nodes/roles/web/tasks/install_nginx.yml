@@ -12,7 +12,8 @@
     state: present
 
 - name: Install regular expression library required by php-mbstring
-  yum: name=https://rpmfind.net/linux/remi/enterprise/7/remi/x86_64/oniguruma5-6.9.4-1.el7.remi.x86_64.rpm state=present
+#  yum: name=https://rpmfind.net/linux/remi/enterprise/7/remi/x86_64/oniguruma5-6.9.4-1.el7.remi.x86_64.rpm state=present
+  yum: name=oniguruma5php state=present
   tags: mbstring
 
 - name: Install nginx, php-fpm and php
@@ -40,6 +41,7 @@
     - php-bcmath
     - php-opcache
     - php-tokenizer
+    - php-intl
 
 - name: Create nginx logs directory for apps
   file:
@@ -82,4 +84,10 @@
     - { name: httpd_can_network_connect_db }
 
 - name: Change state service state
-  service: name=nginx state=started enabled=yes
+  service: 
+    name: "{{ item }}"
+    state: started 
+    enabled: yes
+  with_items:
+    - nginx
+    - php-fpm
