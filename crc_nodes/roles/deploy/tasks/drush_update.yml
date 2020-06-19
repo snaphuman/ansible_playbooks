@@ -1,0 +1,30 @@
+
+- name: Enable maintenance mode
+  shell: |
+    cd {{ item.path }}
+    drush vset maintenance_mode 1
+  with_items: "{{ applications }}"
+  when: 
+    - item.type == deploy_app 
+    - deploy_app is defined
+    - deploy_app in item.key
+  
+- name: Run updates if available
+  shell: |
+    cd {{ item.path }}
+    yes drush updatedb  
+  with_items: "{{ applications }}"
+  when: 
+    - item.type == deploy_app
+    - deploy_app is defined
+    - deploy_app in item.key
+
+- name: Exit from maintenance mode
+  shell: |
+    cd {{ item.path }}
+    drush vset maintenance_mode 1
+  with_items: "{{ applications }}"
+  when: 
+    - item.type == deploy_app
+    - deploy_app is defined
+    - deploy_app in item.key
