@@ -1,9 +1,9 @@
-# Specific postdata deploy tasks 
+# Specific portal web deploy tasks 
 
 - name: Syncronice files from prod to test
   shell: rsync -avzP -e 'ssh' fhernandez@11.0.10.5:/var/www/public/portal/web/ /apps/portal_crc/www/web
   become: webmaster
-  delegate_to: vm-apps-crc
+  delegate_to: "{% if env == 'test' %}vm_apps_crc{% elif env == 'prod' %}vm-app-paginaweb{% endif %}"
   loop: "{{ applications }}"
   when: 
     - deploy_app is defined
