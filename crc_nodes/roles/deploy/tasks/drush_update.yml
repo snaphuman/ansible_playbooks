@@ -5,7 +5,7 @@
     drush vset maintenance_mode 1
   with_items: "{{ applications }}"
   when: 
-    - item.type == deploy_app 
+    - item.type == type
     - deploy_app is defined
     - deploy_app in item.key
   
@@ -15,7 +15,7 @@
     yes drush updatedb  
   with_items: "{{ applications }}"
   when: 
-    - item.type == deploy_app
+    - item.type == type
     - deploy_app is defined
     - deploy_app in item.key
 
@@ -25,6 +25,6 @@
     drush vset maintenance_mode 1
   with_items: "{{ applications }}"
   when: 
-    - item.type == deploy_app
+    - item.type == type
     - deploy_app is defined
     - deploy_app in item.key

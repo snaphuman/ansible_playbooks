@@ -8,6 +8,7 @@
   with_items: "{{ applications }}"
   when: 
     - deploy_app is defined
+    - item.type == type
     - item.name == deploy_app
 
 - name: Set SELinux policy for the symfony site directory
@@ -18,6 +19,7 @@
   with_items: "{{ applications }}"
   when: 
     - deploy_app is defined
+    - item.type == type
     - item.name == deploy_app
 
 - name: Set SELinux policy for the Drupal site default folder
@@ -28,6 +30,7 @@
   with_items: "{{ applications }}"
   when: 
     - deploy_app is defined
+    - item.type == type
     - item.name == deploy_app
   
 - name: Set SELinux policy for the symfony site content generated directory
@@ -38,6 +41,7 @@
   with_items: "{{ applications }}"
   when: 
     - deploy_app is defined
+    - item.type == type
     - item.name == deploy_app
 
 - name: Set SElinux on all the site files
@@ -45,4 +49,5 @@
   with_items: "{{ applications }}"
   when: 
     - deploy_app is defined
+    - item.type == type
     - item.name == deploy_app
