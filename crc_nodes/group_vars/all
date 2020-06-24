@@ -51,7 +51,6 @@ applications:
     repository: https://oauth2:{{ app_token }}@gitlab.com/portal_crc/symfony_cms.git
     dbname: "{{ lookup('env', 'VM_PORTAL_CRC_DB_NAME') }}_{{ env }}"
     dbuser: "{{ lookup('env', 'VM_PORTAL_CRC_DB_USER') }}_{{ env }}"
-    file_host: "{% if env == 'test' %}webmaster@10.0.1.4{% endif %}"
     upasswd: "{% if env == 'test' %}{{ lookup('env', 'VM_PORTAL_CRC_DB_TEST_PASSWD') }}{% endif %}"
     db_host: "{% if env == 'test'  %}10.0.1.12{% endif %}"
     port: 8080
