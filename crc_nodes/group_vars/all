@@ -53,7 +53,6 @@ applications:
     dbuser: "{{ lookup('env', 'VM_PORTAL_CRC_DB_USER') }}_{{ env }}"
     upasswd: "{% if env == 'test' %}{{ lookup('env', 'VM_PORTAL_CRC_DB_TEST_PASSWD') }}{% endif %}"
     db_host: "{% if env == 'test'  %}10.0.1.12{% endif %}"
-    port: 8080
     source_dump_folder: "{{ lookup('env', 'VM_PORTAL_CRC_SOURCE_DUMP_FOLDER') }}"
     source_dump_file: "{{ lookup('env', 'VM_PORTAL_CRC_SOURCE_DUMP_FILE') }}"
     source_host: "zoque"
