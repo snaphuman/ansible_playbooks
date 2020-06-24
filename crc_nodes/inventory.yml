@@ -2,12 +2,13 @@
 [webservers]
 vm-apps-crc ansible_host=10.0.1.4 ansible_user=webmaster apps=[postdata,drupal,portal_crc]
 vm-postdata ansible_host=12.0.1.13 ansible_user=webmaster apps=[postdata]
+vm-app-paginaweb ansible_host=12.0.1.14 ansible_user=webmaster apps=[portal_crc]
 webportalapp ansible_host=11.0.10.5 ansible_user=fhernandez apps=[portal_crc]
-
 
 [dbservers]
 vm-dbs-crc ansible_host=10.0.1.12 ansible_user=webmaster apps=[postdata,drupal,portal_crc]
 vm-db-postdata ansible_host=12.0.1.9 ansible_user=webmaster apps=[postdata]
+vm-db-paginaweb ansible_host=12.0.1.15 ansible_user=webmaster
 
 [test]
 vm-apps-crc
@@ -19,8 +20,9 @@ env=test
 [prod]
 vm-postdata apps=[postdata]
 vm-db-postdata apps=[postdata]
+vm-app-paginaweb apps=[portal_crc]
+vm-db-paginaweb
 webportalapp
-
 
 [prod:vars]
 env=prod
