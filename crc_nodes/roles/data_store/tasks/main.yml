@@ -12,6 +12,7 @@
     shrink: "{{ item.shrink}}"
     force: "{{ item.force }}"
   when:
+    - ansible_lvm is defined
     - ansible_lvm["vgs"]["vg.data"]["free_g"] != "0"
   with_items:
     - { name: apps, size: 50%VG, state: present, shrink: no, force: no }
