@@ -51,8 +51,8 @@ applications:
     repository: https://oauth2:{{ app_token }}@gitlab.com/portal_crc/symfony_cms.git
     dbname: "{{ lookup('env', 'VM_PORTAL_CRC_DB_NAME') }}_{{ env }}"
     dbuser: "{{ lookup('env', 'VM_PORTAL_CRC_DB_USER') }}_{{ env }}"
-    upasswd: "{% if env == 'test' %}{{ lookup('env', 'VM_PORTAL_CRC_DB_TEST_PASSWD') }}{% endif %}"
-    db_host: "{% if env == 'test'  %}10.0.1.12{% endif %}"
+    upasswd: "{% if env == 'test' %}{{ lookup('env', 'VM_PORTAL_CRC_DB_TEST_PASSWD') }}{% elif env == 'prod' %}{{ lookup('env', 'VM_PORTAL_CRC_DB_PROD_PASSWD') }}{% endif %}"
+    db_host: "{% if env == 'test'  %}10.0.1.12{% elif env == 'prod' %}12.0.1.15{% endif %}"
     source_dump_folder: "{{ lookup('env', 'VM_PORTAL_CRC_SOURCE_DUMP_FOLDER') }}"
     source_dump_file: "{{ lookup('env', 'VM_PORTAL_CRC_SOURCE_DUMP_FILE') }}"
     source_host: "zoque"
