@@ -1,0 +1,3 @@
+[submodule "crc_nodes/roles/web/tomcat"]
+	path = crc_nodes/roles/web/tomcat
+	url = https://github.com/robertdebock/ansible-role-tomcat/
