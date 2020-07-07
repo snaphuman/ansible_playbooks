@@ -4,26 +4,29 @@
     msg: "dbname {{ item.dbname }} dbuser {{ item.dbuser }} upasswd {{ item.upasswd }}"
   loop: "{{ applications }}"
   when:
-    - deploy_apps is defined
-    - item.name == deploy_apps
+    - deploy_app is defined
+    - item.name == deploy_app
 
 - name: Create application database
-  mysql_db: 
-    name: "{{ item.dbname }}"
-#    login_user: "{{ item.dbuser }}"
-#    login_password: "{{ item.upasswd }}"
-    state: present
+  mysql_db: name={{ item.dbname }} state=present
   loop: "{{ applications }}"
   when:
-    - deploy_apps is defined
-    - item.name == deploy_apps
+    - deploy_app is defined
+    - item.name == deploy_app
 
 - name: Create application database user
-  mysql_user: name={{ item.dbuser }} password={{ item.upasswd }} priv={{ item.dbname }}.*:ALL host='%' state=present
+  mysql_user: name={{ item.dbuser }} password={{ item.upasswd }} priv='{{ item.dbname }}.*:ALL' state=present
   loop: "{{ applications }}"
   when:
-    - deploy_apps is defined
-    - item.name == deploy_apps
+    - deploy_app is defined
+    - item.name == deploy_app
+
+- name: Create application database user
+  mysql_user: name={{ item.dbuser }} password={{ item.upasswd }} priv='{{ item.dbname }}.*:ALL' state=present host="%"
+  loop: "{{ applications }}"
+  when:
+    - deploy_app is defined
+    - item.name == deploy_app
 
 - name: Start MariaDB unit
   service: name=mariadb state=started enabled=yes
