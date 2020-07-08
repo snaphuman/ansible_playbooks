@@ -28,6 +28,9 @@
     - role: drush
       tags:
         - drush_plays
+    - role: web/tomcat
+      tags:
+        - tomcat_plays
 
 - name: configure database servers
   hosts: dbservers, !localdev
