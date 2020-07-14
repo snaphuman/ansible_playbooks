@@ -10,4 +10,5 @@
     owner: webmaster
     group: webmaster
   with_items: "{{ applications }}"
+  when: item.name in apps
 
