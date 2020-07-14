@@ -61,3 +61,15 @@ applications:
     server_name: crcom.gov.co
     default_server: false 
     source_host: "zoque"
+  - name: encuestas
+    type: limesurvey
+    version: "{% if env == 'prod' %}4.3.2+200629{% endif %}"
+    path: /apps/encuesta/www
+    repository: https://github.com/LimeSurvey/LimeSurvey
+    dbname: "{{ lookup('env', 'VM_ENCUESTA_DB_NAME') }}_{{ env }}"
+    dbuser: "{{ lookup('env', 'VM_ENCUESTA_DB_USER') }}_{{ env }}"
+    upasswd: "{% if env == 'prod' %}{{ lookup('env', 'VM_ENCUESTA_DB_PROD_PASSWD') }}{% endif %}"
+    db_host: "{% if env == 'test'  %}localhost{% endif %}"
+    port: 8080
+    server_name: encuestas.crc.gov.co
+    default_server: true

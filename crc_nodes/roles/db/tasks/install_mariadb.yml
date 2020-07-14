@@ -13,7 +13,7 @@
   - restart mariadb
 
 - name: Create MariaDB log file
-  file: path=/var/log/mysqld.log state=file owner=mysql group=mysql mode=0775
+  file: path=/var/log/mysqld.log state=touch owner=mysql group=mysql mode=0775
 
 - name: Create MariaDB PID directory
   file: path=/var/run/mysqld state=directory owner=mysql group=mysql mode=0775

@@ -4,11 +4,13 @@ vm-apps-crc ansible_host=10.0.1.4 ansible_user=webmaster apps=[postdata,drupal,p
 vm-postdata ansible_host=12.0.1.13 ansible_user=webmaster apps=[postdata]
 vm-app-paginaweb ansible_host=12.0.1.14 ansible_user=webmaster apps=[portal_crc]
 webportalapp ansible_host=11.0.10.5 ansible_user=fhernandez apps=[portal_crc]
+vm-limesurvey ansible_host=132.145.138.202 ansible_user=webmaster apps=[encuestas]
 
 [dbservers]
 vm-dbs-crc ansible_host=10.0.1.12 ansible_user=webmaster apps=[postdata,drupal,portal_crc]
 vm-db-postdata ansible_host=12.0.1.9 ansible_user=webmaster apps=[postdata]
 vm-db-paginaweb ansible_host=12.0.1.15 ansible_user=webmaster
+vm-limesurvey
 
 [test]
 vm-apps-crc
@@ -26,6 +28,9 @@ webportalapp
 
 [prod:vars]
 env=prod
+
+[prod_oracle]
+vm-limesurvey
 
 [jmeter_nodes]
 vm-testing1 ansible_host=12.0.1.10 ansible_user=testing slave=true
