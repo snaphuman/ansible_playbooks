@@ -1,0 +1,31 @@
+- name: copy repo file with postgresql excluded
+  copy:
+    src: ../files/CentOS-Base.repo
+    dest: /etc/yum.repos.d/
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: add yum repository for latest version of postgresql
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm 
+
+- name: install latest postgresql version
+  yum:
+    name: postgresql12-server
+    state: present
+    
+- name: enable incoming ports for specific postgresql connections
+  firewalld: 
+    port: 5432/tcp
+    permanent: true 
+    state: enabled 
+    immediate: yes
+  
+#- name: configure selinnx to enables postgres port usage
+#  seport:
+#    ports: 5432
+#    proto: tcp
+#    setype: http_port_t
+#    state: present
+
