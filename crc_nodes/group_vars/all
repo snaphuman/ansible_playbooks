@@ -64,7 +64,7 @@ applications:
   - name: encuestas
     type: limesurvey
     version: "{% if env == 'prod' %}4.3.2+200629{% endif %}"
-    path: /apps/encuesta/www
+    path: /apps/encuestas/www
     repository: https://github.com/LimeSurvey/LimeSurvey
     dbname: "{{ lookup('env', 'VM_ENCUESTA_DB_NAME') }}_{{ env }}"
     dbuser: "{{ lookup('env', 'VM_ENCUESTA_DB_USER') }}_{{ env }}"
