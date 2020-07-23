@@ -1,3 +1,8 @@
+- name: install postgresql dependencies
+  yum:
+    name: python-psycopg2
+    state: present
+
 - name: copy repo file with postgresql excluded
   copy:
     src: ../files/CentOS-Base.repo
@@ -69,7 +74,27 @@
     group: postgres
     mode: 0600
   notify: restart postgresql
-    
+
+- name: Ensure PostgreSQL users are present.
+  postgresql_user:
+    name: "{{ postgres_db_user }}"
+    password: "{{ postgres_db_pass }}"
+    role_attr_flags: NOCREATEDB,NOSUPERUSER,NOCREATEROLE
+    state: present
+  become: true
+  become_user: postgres
+  # See: https://github.com/ansible/ansible/issues/16048#issuecomment-229012509
+  vars:
+    ansible_ssh_pipelining: true
+
+- name: Create PostgreSQL databases
+  postgresql_db:
+    name: "{{ item }}"
+    owner: "{{ postgres_db_user }}"
+  with_items:
+    - crcagenti
+    - agenti_admon
+    - sistemagcp
 - name: enable incoming ports for specific postgresql connections
   firewalld: 
     port: 5432/tcp

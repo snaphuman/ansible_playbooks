@@ -16,6 +16,11 @@ drush_composer_path: /usr/local/bin/drush
 
 db_root_password: "{{ lookup('env', 'VM_DB_ROOT_PASSWORD') }}"
 
+postgres_db_agenti: "{{ lookup('env', 'VM_POSTGRES_DB_AGENTI') }}" 
+postgres_db_sgcp: "{{ lookup('env', 'VM_POSTGRES_DB_SGCP') }}"
+postgres_db_user: "{{ lookup('env', 'VM_POSTGRES_DB_USER') }}"
+postgres_db_pass: "{{ lookup('env', 'VM_POSTGRES_DB_PASS') }}"
+
 applications:
   - name: postdata
     type: drupal7
