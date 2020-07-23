@@ -14,6 +14,61 @@
   yum:
     name: postgresql12-server
     state: present
+
+- name: Set PostgreSQL environment variables.
+  template:
+    src: postgres.sh.j2
+    dest: /etc/profile.d/postgres.sh
+    mode: 0644
+  notify: restart postgresql
+
+- name: Override default postgres unit file
+  lineinfile:
+    path: /usr/lib/systemd/system/postgresql-12.service
+    regexp: '^Environment=PGDATA=\/var\/lib\/pgsql\/12\/data\/'
+    line: Environment=PGDATA=/apps/postgres/data/
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart postgresql
+
+- name: Ensure postgresql data directory exists
+  file:
+    path: /apps/postgres/data/
+    owner: postgres
+    group: postgres
+    state: directory
+    mode: 0700
+
+- name: Check if PostgreSQL database is initialized.
+  stat:
+    path: "/apps/postgres/data/PG_VERSION"
+  register: pgdata_dir_version 
+
+- name: Ensure PostgreSQL database is initialized.
+  command: /usr/pgsql-12/bin/initdb -D /apps/postgres/data
+  when: not pgdata_dir_version.stat.exists
+  become: true
+  become_user: postgres
+  # See: https://github.com/ansible/ansible/issues/16048#issuecomment-229012509
+  vars:
+    ansible_ssh_pipelining: true
+
+- name: Configure postgresql global settings.
+  template:
+    src: postgresql.conf.j2
+    dest: /apps/postgres/data/postgresql.conf
+    mode: 0600
+  notify: restart postgresql
+
+- name: Configure host based authentication (if entries are configured).
+  template:
+    src: pg_hba.conf.j2
+    dest: /apps/postgres/data/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: 0600
+  notify: restart postgresql
     
 - name: enable incoming ports for specific postgresql connections
   firewalld: 
@@ -21,11 +76,3 @@
     permanent: true 
     state: enabled 
     immediate: yes
-  
-#- name: configure selinnx to enables postgres port usage
-#  seport:
-#    ports: 5432
-#    proto: tcp
-#    setype: http_port_t
-#    state: present
-
