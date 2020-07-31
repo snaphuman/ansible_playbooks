@@ -1,0 +1,10 @@
+
+- name: debug
+  debug:
+    msg: operation
+
+- include: import_database.yml
+  when: operation == "import" 
+
+- include: export_database.yml
+  when: operation == "export" 

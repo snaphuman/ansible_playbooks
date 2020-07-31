@@ -61,6 +61,9 @@
     - role: deploy/portal_crc
       tags:
         - portal_crc
+    - role: deploy/solucion_controversias
+      tags:
+        - solucion_controversias
 
 - name: manage deployment database operations
   hosts: dbservers, !localdev, !webservers
@@ -73,6 +76,11 @@
     - role: deploy/portal_crc/db
       tags:
         - portal_crc_db
+      vars:
+        - operation: "import" # use import or export"
+    - role: deploy/solucion_controversias/db
+      tags:
+        - solucion_controversias_db
       vars:
         - operation: "import" # use import or export"
 

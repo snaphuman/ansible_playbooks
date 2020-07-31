@@ -1,0 +1,18 @@
+# Specific ajsc deploy tasks
+
+- name: Syncronice files from dev to ajsc
+  shell: rsync -avzP -e 'ssh' {{ lookup('env', 'VM_ZOQUE_HOME') }}/Code/drupal/solucion-controversias/www/sites/default/files {{ item.file_host }}:/apps/solucion-controversias/www/sites/default
+  delegate_to: zoque
+  become: snaphuman
+  loop: "{{ applications }}"
+  when: item.name == deploy_app
+
+- name: add table prefix to config file
+  lineinfile:
+    path: "/apps/solucion-controversias/www/sites/default/settings.php"
+    regexp: "^'prefix' => '',"
+    line: "'prefix' => 'crc_'"
+    mode: '0644'
+
+
+

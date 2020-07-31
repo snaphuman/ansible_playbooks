@@ -78,3 +78,19 @@ applications:
     port: 8080
     server_name: encuestas.crc.gov.co
     default_server: true
+  - name: solucion-controversias
+    type: drupal7
+    version: "{% if env == 'test' %}test{% elif env == 'prod' %}master{% endif %}"
+    path: /apps/solucion-controversias/www
+    repository: https://oauth2:{{ app_token }}@gitlab.com/portal_crc/solucion_controversias.git
+    dbname: "{{ lookup('env', 'VM_CONTROVERSIAS_DB_NAME') }}_{{ env }}"
+    dbuser: "{{ lookup('env', 'VM_CONTROVERSIAS_DB_USER') }}_{{ env }}"
+    upasswd: "{% if env == 'test' %}{{ lookup('env', 'VM_CONTROVERSIAS_DB_TEST_PASSWD') }}{% elif env == 'prod' %}{{ lookup('env', 'VM_CONTROVERSIAS_DB_PROD_PASSWD') }}{% endif %}"
+    source_dump_folder: "{{ lookup('env', 'VM_CONTROVERSIAS_SOURCE_DUMP_FOLDER') }}"
+    source_dump_file: "{{ lookup('env', 'VM_CONTROVERSIAS_SOURCE_DUMP_FILE') }}"
+    source_host: "zoque"
+    file_host: "{% if env == 'test' %}webmaster@10.0.1.4{% elif env == 'prod' %}webmaster@12.0.1.13{% endif %}"
+    db_host: "{% if env == 'test' %}10.0.1.12{% elif env == 'prod' %}12.0.1.9{% endif %}"
+    port: "{% if env == 'prod' %}443{% elif env == 'test' %}8083{% endif %}"
+    server_name: solucion-controversias.crcom.gov.co
+    default_server: false
