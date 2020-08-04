@@ -35,7 +35,7 @@ server {
         fastcgi_param  HTTPS off;
     } 
 
-    #Configuración Chat Agenti
+    # Configuración Chat Agenti
 
     location ~* \.(eot|ttf|woff)$ {
         add_header Access-Control-Allow-Origin *;
@@ -54,4 +54,13 @@ server {
         fastcgi_buffers 16 16k; 
         fastcgi_buffer_size 32k;
     }
+
+    # Configuración CKfinder
+    location ~ ^/ckfinder {
+        fastcgi_index index.html;
+        fastcgi_pass unix:/var/run/php-fpm/php7.0-fpm.sock;
+        include fastcgi_params;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
 }
