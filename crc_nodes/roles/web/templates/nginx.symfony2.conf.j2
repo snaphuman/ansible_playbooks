@@ -34,4 +34,24 @@ server {
         fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param  HTTPS off;
     } 
+
+    #Configuración Chat Agenti
+
+    location ~* \.(eot|ttf|woff)$ {
+        add_header Access-Control-Allow-Origin *;
+    }
+
+    location ~ \.css {
+        add_header  Content-Type    text/css;
+    }
+
+    location /dextraCommunity {
+        include /etc/nginx/mime.types;
+        fastcgi_index index.php;
+        fastcgi_pass unix:/var/run/php-fpm/php7.0-fpm.sock;
+        include fastcgi_params;
+        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_buffers 16 16k; 
+        fastcgi_buffer_size 32k;
+    }
 }

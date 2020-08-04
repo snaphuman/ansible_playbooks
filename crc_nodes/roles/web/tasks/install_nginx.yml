@@ -42,6 +42,7 @@
     - php-opcache
     - php-tokenizer
     - php-intl
+    - php-pgsql
 
 - name: Create nginx logs directory for apps
   file:
