@@ -42,7 +42,7 @@
         - db_plays
     - role: db/postgresql
       tags: 
-        - postgresql
+        - postgresql_plays
 
 - name: deploy applications means to fetch and configure
   hosts: webservers, !localdev
