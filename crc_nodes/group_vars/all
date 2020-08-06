@@ -9,7 +9,7 @@ ntpserver2: 2.south-america.pool.ntp.org
 
 app_token: "{{  lookup('env', 'VM_POSTDATA_APP_TOKEN') }}"
 
-composer_hash: e0012edf3e80b6978849f5eff0d4b4e4c79ff1609dd1e613307e16318854d24ae64f26d17af3ef0bf7cfb710ca74755a
+composer_hash: e5325b19b381bfd88ce90a5ddb7823406b2a38cff6bb704b0acc289a09c8128d4a8ce2bbafcd1fcbdc38666422fe2806
 
 drush_composer_version: "~8.0"
 drush_composer_path: /usr/local/bin/drush
@@ -89,8 +89,8 @@ applications:
     source_dump_folder: "{{ lookup('env', 'VM_CONTROVERSIAS_SOURCE_DUMP_FOLDER') }}"
     source_dump_file: "{{ lookup('env', 'VM_CONTROVERSIAS_SOURCE_DUMP_FILE') }}"
     source_host: "zoque"
-    file_host: "{% if env == 'test' %}webmaster@10.0.1.4{% elif env == 'prod' %}webmaster@12.0.1.19{% endif %}"
-    db_host: "{% if env == 'test' %}10.0.1.12{% elif env == 'prod' %}12.0.1.20{% endif %}"
+    file_host: "{% if env == 'test' %}webmaster@10.0.1.4{% elif env == 'prod' %}webmaster@12.0.1.20{% endif %}"
+    db_host: "{% if env == 'test' %}10.0.1.12{% elif env == 'prod' %}12.0.1.21{% endif %}"
     port: "{% if env == 'prod' %}8080{% elif env == 'test' %}8083{% endif %}"
     server_name: solucion-controversias.crcom.gov.co
     default_server: "{% if env == 'test' %}false{% elif env == 'prod' %}true{% endif %}"

@@ -28,19 +28,9 @@
     - php-xml
     - php-mcrypt
     - php-soap
-    - php-cli
-    - php-common 
-    - php-json
-    - php-mysqlnd
-    - php-pdo
     - php-process
-    - php-xml
-    - php-pdo_mysql
-    - php-dom
-    - php-mysqli
     - php-bcmath
     - php-opcache
-    - php-tokenizer
     - php-intl
     - php-pgsql
 
