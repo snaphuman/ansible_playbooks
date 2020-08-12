@@ -73,4 +73,16 @@ server {
         fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 
+    # Configuración de seguridad para prevenir acceso a archivos con datos sensibles
+    location = /dextraCommunity/qa-config.php {
+	return 403;
+    }
 }
+{% for item in locations %}
+server {
+	server_name {{ item.name }};
+	location / {
+		return 301 {{ redirect_host }}{{ item.redirect_url}};
+	}
+}
+{% endfor %}
