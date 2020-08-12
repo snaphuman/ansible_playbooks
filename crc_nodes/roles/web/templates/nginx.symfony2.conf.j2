@@ -86,3 +86,12 @@ server {
 	}
 }
 {% endfor %}
+server {
+    listen       5000;
+    server_name  localhost;
+    location / {
+      root   /apps/mapa_infraestructura/app/dist;
+      index  index.html;
+      try_files $uri $uri/ /index.html;
+    }
+}
