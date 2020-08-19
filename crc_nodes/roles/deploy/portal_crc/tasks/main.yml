@@ -14,3 +14,18 @@
   with_items:
     - setfacl -R -m u:nginx:rwX -m u:webmaster:rwX /apps/portal_crc/www/app/cache /apps/portal_crc/www/app/logs
     - setfacl -dR -m u:nginx:rwX -m u:webmaster:rwX /apps/portal_crc/www/app/cache /apps/portal_crc/www/app/logs
+
+- name: allow write permissions to cache directory through selinux context
+  sefcontext:
+    target: "/apps/portal_crc/www/app/{{ item }}(/.*)?"
+    setype: httpd_sys_script_rw_t
+    state: present
+  with_items:
+    - cache
+    - logs
+
+- name: Apply new SELinux file context to cache and log directories
+  command: "restorecon -R /apps/portal_crc/www/app/{{ item }}"
+  with_items:
+    - cache
+    - logs
