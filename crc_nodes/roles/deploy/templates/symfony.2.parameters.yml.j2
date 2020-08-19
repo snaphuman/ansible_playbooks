@@ -2,7 +2,7 @@
 parameters:
     database_driver: pdo_mysql
     database_host: {{ item.db_host }} 
-    database_port: 3306
+    database_port: "{{ item.db_port | default(3306) }}"
     database_name: {{ item.dbname }}
     database_user: {{ item.dbuser }}
     database_password: {{ item.upasswd }}

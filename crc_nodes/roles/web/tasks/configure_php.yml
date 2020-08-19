@@ -5,3 +5,24 @@
     regexp: '^memory_limit = 128M'
     line: memory_limit = 512M
   notify: restart php-fpm
+
+- name: configure post_max_size
+  lineinfile:
+    path: /etc/php.ini
+    regexp: '^post_max_size = 8M'
+    line: post_max_size = 50M
+  notify: restart php-fpm
+
+- name: configure upload_max_filesize
+  lineinfile:
+    path: /etc/php.ini
+    regexp: '^upload_max_filesize = 2M'
+    line: upload_max_filesize = 50M
+  notify: restart php-fpm
+
+- name: configure error_reporting level 
+  lineinfile:
+    path: /etc/php.ini
+    regexp: '^error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT'
+    line: error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE
+  notify: restart php-fpm
