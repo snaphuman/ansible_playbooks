@@ -94,3 +94,17 @@ applications:
     port: "{% if env == 'prod' %}8080{% elif env == 'test' %}8083{% endif %}"
     server_name: solucion-controversias.crcom.gov.co
     default_server: "{% if env == 'test' %}false{% elif env == 'prod' %}true{% endif %}"
+  - name: dextra_reports
+    type: symfony2
+    version: master
+    path: /apps/dextra_reports/www
+    repository: https://oauth2:{{ app_token }}@gitlab.com/portal_crc/dextra_reports.git
+    file_host: "{% if env == 'test' %}webmaster@10.0.1.4{% elif env == 'prod' %}webmaster@12.0.1.14{% endif %}"
+    dbname: "{{ lookup('env', 'VM_DEXTRA_REPORTES_DB_NAME') }}"
+    dbuser: "{{ lookup('env', 'VM_DEXTRA_REPORTES_DB_USER') }}"
+    upasswd: "{{ lookup('env', 'VM_DEXTRA_REPORTES_DB_PASSWD') }}"
+    db_host: "{% if env == 'test' %}10.0.1.12{% elif env == 'prod' %}12.0.1.15{% endif %}"
+    db_port: "{{ lookup('env', 'VM_DEXTRA_REPORTES_DB_PORT') }}"
+    port: "{% if env == 'prod' %}8081{% elif env == 'test' %}8084{% endif %}"
+    server_name: reportes-chat.crcom.gov.co
+    default_server: false

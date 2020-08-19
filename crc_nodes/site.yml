@@ -64,6 +64,9 @@
     - role: deploy/solucion_controversias
       tags:
         - solucion_controversias
+    - role: deploy/dextra_reports
+      tags:
+        - dextra_reports
 
 - name: manage deployment database operations
   hosts: dbservers, !localdev, !webservers
