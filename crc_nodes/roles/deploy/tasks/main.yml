@@ -4,9 +4,9 @@
 - include_tasks: config_drupal7_site.yml
   vars:
     - type: drupal7
-- include_tasks: drush_update.yml
-  vars:
-    - type: drush_update
+#- include_tasks: drush_update.yml
+#  vars:
+#    - type: drush_update
 - include_tasks: config_symfony2_site.yml
   vars:
     - type: symfony2

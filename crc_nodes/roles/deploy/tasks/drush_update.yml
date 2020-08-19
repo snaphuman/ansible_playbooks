@@ -7,7 +7,6 @@
   when: 
     - item.type == type
     - deploy_app is defined
-    - deploy_app in item.key
   
 - name: Run updates if available
   shell: |
@@ -17,7 +16,6 @@
   when: 
     - item.type == type
     - deploy_app is defined
-    - deploy_app in item.key
 
 - name: Exit from maintenance mode
   shell: |
@@ -27,4 +25,3 @@
   when: 
     - item.type == type
     - deploy_app is defined
-    - deploy_app in item.key
