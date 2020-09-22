@@ -1,3 +1,16 @@
+{% if item.server_name is defined or item.port == '443' %}
+server {
+
+        listen 80;
+        if ($host = "crcom.gov.co") {
+                return 301 https://crcom.gov.co$request_uri;
+        }
+        if ($host = "www.crcom.gov.co") {
+                return 301 https://www.crcom.gov.co$request_uri;
+        }
+}
+{% endif %}
+
 server {
     listen {{ item.port }} {% if item.default_server is defined %}default_server{% endif %} {% if item.port == '443' %}ssl{% endif %};
 
@@ -5,6 +18,7 @@ server {
     server_name {{ item.name }}.{{ env }};
     {% else %}
     server_name {{ item.server_name }};
+    add_header Strict-Transport-Security "max-age=31536000" always;
 
     {% if item.ssl %}
     	ssl_certificate /etc/nginx/ssl/portalweb.cer;
@@ -40,7 +54,10 @@ server {
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
        	include fastcgi_params;
         fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+    	{% if not item.ssl %}
         fastcgi_param  HTTPS off;
+    	{% endif %}
     } 
 
     {% if item.name == "portal_crc" %}
@@ -83,18 +100,8 @@ server {
 	proxy_pass http://127.0.0.1:9001;
     }
 
-    #location ^~ /dextraReportsAgenti {
-    #    proxy_pass http://127.0.0.1:8084;
-    #    proxy_set_header Host $host;
-    #    proxy_set_header X-Real-IP $remote_addr;
-    #    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    #}
-
     location ^~ /agentiAsesorWeb/ {
         proxy_pass http://127.0.0.1:9001;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
     # Configuración CKfinder
@@ -112,6 +119,21 @@ server {
     {% endif %}
 }
 {% if item.name == "portal_crc" %}
+
+location ^~ /despliegue-infraestructura {
+    alias /apps/mapa_infraestructura/app/dist/;
+    expires -1;
+    add_header Pragma "no-cache";
+    add_header Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
+    try_files $uri $uri/ /index.html = 404;
+}
+
+location ^~ /news-service/ {
+    include /etc/nginx/mime.types;
+    rewrite ^/news-service/(.*) /$1 break;
+    proxy_pass http://127.0.0.1:5002;
+}
+
 {% for item in locations %}
 server {
 	server_name {{ item.name }};
@@ -122,12 +144,40 @@ server {
 {% endfor %}
 server {
     listen       5000;
-    server_name  localhost;
+    server_name  127.0.0.1 _;
     location / {
       root   /apps/mapa_infraestructura/app/dist;
       index  index.html;
       try_files $uri $uri/ /index.html;
     }
 }
+
+server {
+    listen 443 ssl; 
+
+    server_name api-noticias.crcom.gov.co www.api-noticias.crcom.gov.co;
+    add_header Strict-Transport-Security "max-age=31536000" always; 
+    
+    ssl_certificate /etc/nginx/ssl/portalweb.cer;
+    ssl_certificate_key /etc/nginx/ssl/portalweb.key;
+
+    access_log /misc/logs/portal_crc/api-noticias.access.log;
+    error_log /misc/logs/portal_crc/api-noticias.error.log;
+
+    location / {
+      proxy_pass http://127.0.0.1:5001;
+    }
+}
+
+server {
+    listen       5002;
+    server_name  localhost _;
+    root   /apps/news-service/frontend/dist;
+    location / {
+      index index.html;
+      try_files $uri $uri/ /index.html;
+    }
+}
+
 {% endif %}
 
