@@ -3,6 +3,14 @@ server {
 
     {% if item.server_name is not defined or item.port != '443' %}
     server_name {{ item.name }}.{{ env }};
+    {% else %}
+    server_name {{ item.server_name }};
+
+    {% if item.ssl %}
+    	ssl_certificate /etc/nginx/ssl/portalweb.cer;
+	ssl_certificate_key /etc/nginx/ssl/portalweb.key;
+    {% endif %}
+
     {% endif %}
 
     root /apps/{{ item.name }}/www/web;

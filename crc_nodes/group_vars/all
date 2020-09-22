@@ -38,6 +38,7 @@ applications:
     port: "{% if env == 'prod' %}443{% elif env == 'test' %}8080{% endif %}"
     server_name: postdata.gov.co
     default_server: true
+    ssl: "{% if env == 'prod' %}true{% elif env == 'test' %}false{% endif %}"
   - name: drupal
     type: drupal7
     version: "{% if env == 'test' %}7.69{% endif %}"
@@ -49,6 +50,7 @@ applications:
     upasswd: "{% if env == 'test' %}{{ lookup('env', 'VM_DRUPAL_DB_TEST_PASSWD') }}{% endif %}"
     db_host: "{% if env == 'test'  %}10.0.1.12{% endif %}"
     port: 8081
+    ssl: "{% if env == 'prod' %}false{% elif env == 'test' %}false{% endif %}"
   - name: portal_crc 
     type: symfony2
     version: "{% if env == 'test' %}test{% elif env == 'prod' %}master{% endif %}"
@@ -62,9 +64,10 @@ applications:
     source_dump_file: "{{ lookup('env', 'VM_PORTAL_CRC_SOURCE_DUMP_FILE') }}"
     source_host: "zoque"
     file_host: "{% if env == 'test' %}webmaster@10.0.1.4{% elif env == 'prod' %}webmaster@12.0.1.15{% endif %}"
-    port: "{% if env == 'prod' %}8080{% elif env == 'test' %}8082{% endif %}"
+    port: "{% if env == 'prod' %}443{% elif env == 'test' %}8082{% endif %}"
     server_name: crcom.gov.co
-    default_server: false 
+    default_server: "{% if env == 'prod' %}true{% elif env == 'test' %}false{% endif %}"
+    ssl: "{% if env == 'prod' %}true{% elif env == 'test' %}false{% endif %}"
     source_host: "zoque"
   - name: encuestas
     type: limesurvey
@@ -78,6 +81,7 @@ applications:
     port: 8080
     server_name: encuestas.crc.gov.co
     default_server: true
+    ssl: "{% if env == 'prod' %}false{% elif env == 'test' %}false{% endif %}"
   - name: solucion-controversias
     type: drupal7
     version: "{% if env == 'test' %}test{% elif env == 'prod' %}master{% endif %}"
@@ -94,6 +98,7 @@ applications:
     port: "{% if env == 'prod' %}8080{% elif env == 'test' %}8083{% endif %}"
     server_name: solucion-controversias.crcom.gov.co
     default_server: "{% if env == 'test' %}false{% elif env == 'prod' %}true{% endif %}"
+    ssl: "{% if env == 'prod' %}false{% elif env == 'test' %}false{% endif %}"
   - name: dextra_reports
     type: symfony2
     version: master
@@ -108,3 +113,4 @@ applications:
     port: "{% if env == 'prod' %}8081{% elif env == 'test' %}8084{% endif %}"
     server_name: reportes-chat.crcom.gov.co
     default_server: false
+    ssl: "{% if env == 'prod' %}false{% elif env == 'test' %}false{% endif %}"
