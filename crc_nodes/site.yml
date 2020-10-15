@@ -8,7 +8,7 @@
         - set_lvm
 
 - name: apply common configuration to webservers and dbservers
-  hosts: webservers, dbservers
+  hosts: webservers, dbservers, cmpt-qa-tools
   remote_user: root
   become: yes
 

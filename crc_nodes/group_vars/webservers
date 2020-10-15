@@ -1,8 +1,4 @@
 
-git_version: 2.26.0
-git_prefix: /usr/local/git
-git_binary_dir: "{{ temp_dir }}/git-{{ git_version }}"
-git_url: "https://www.kernel.org/pub/software/scm/git/git-{{ git_version }}.tar.gz"
 
 redirect_host: "{% if env == 'test' %}http://10.0.1.4:8082{% elif env == 'prod' %}https://www.crcom.gov.co{% endif %}"
 

@@ -22,3 +22,10 @@
 - include: configure_firewall.yml
 
 - include: default_selinux.yml
+  tags: [default_selinux]
+
+- name: run git installation from web role
+  include_role:
+    name: web
+    tasks_from: install_git
+  tags: [install_git]

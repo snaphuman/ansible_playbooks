@@ -1,6 +1,11 @@
 ---
 # Global variables applicable to all hosts
 
+git_version: 2.26.0
+git_prefix: /usr/local/git
+git_binary_dir: "{{ temp_dir }}/git-{{ git_version }}"
+git_url: "https://www.kernel.org/pub/software/scm/git/git-{{ git_version }}.tar.gz"
+
 temp_dir: /tmp
 
 ntpserver0: 2.co.pool.ntp.org
