@@ -119,3 +119,17 @@ applications:
     server_name: reportes-chat.crcom.gov.co
     default_server: false
     ssl: "{% if env == 'prod' %}false{% elif env == 'test' %}false{% endif %}"
+  - name: geci
+    type: drupal8
+    version: "{% if env == 'test' %}test{% elif env == 'prod' %}master{% endif %}"
+    path: /apps/geci/www
+    repository: https://oauth2:{{ app_token }}@gitlab.com/portal_crc/geci.git
+    dbname: "{{ lookup('env', 'VM_GECI_DB_NAME') }}_{{ env }}"
+    dbuser: "{{ lookup('env', 'VM_GECI_DB_USER') }}_{{ env }}"
+    upasswd: "{% if env == 'test' %}{{ lookup('env', 'VM_GECI_DB_TEST_PASSWD') }}{% elif env == 'prod' %}{{ lookup('env', 'VM_GECI_DB_PROD_PASSWD') }}{% endif %}"
+    file_host: "{% if env == 'test' %}webmaster@10.0.1.4{% elif env == 'prod' %}webmaster@12.0.1.20{% endif %}"
+    db_host: "{% if env == 'test' %}10.0.1.12{% elif env == 'prod' %}12.0.1.21{% endif %}"
+    port: "{% if env == 'prod' %}8081{% elif env == 'test' %}8085{% endif %}"
+    server_name: geci.crcom.gov.co
+    default_server: false
+    ssl: "{% if env == 'prod' %}false{% elif env == 'test' %}false{% endif %}"
