@@ -1,0 +1,81 @@
+server {
+    listen {{ item.port }} {% if item.default_server is defined %}default_server{% endif %} {% if item.port == '443' %}ssl{% endif %};
+
+    {% if item.server_name is not defined or item.port != '443' %}
+    server_name {{ item.name }}.{{ env }};
+    {% else %}
+    server_name {{ item.server_name }};
+    ssl_certificate /etc/nginx/ssl/portalweb.cer;
+    ssl_certificate_key /etc/nginx/ssl/portalweb.key;
+    {% endif %}
+
+    root /apps/{{ item.name }}/www/w;
+
+    access_log /misc/logs/{{ item.name }}/access.log;
+    error_log /misc/logs/{{ item.name}}/error.log;
+
+    add_header X-Content-Options nosniff;
+
+    client_max_body_size 80M;
+
+    location ~ ^/w/(index|load|api|thumb|opensearch_desc|rest|img_auth)\.php$ {
+        include /etc/nginx/fastcgi_params;                                     
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;      
+        fastcgi_pass php; # or whatever port your PHP-FPM listens on           
+    }                                                                          
+                                                                               
+    # Images                                                                   
+    location /w/images {                                                       
+        # Separate location for images/ so .php execution won't apply          
+    }                                                                          
+                                                                               
+    location /w/images/deleted {                                               
+        # Deny access to deleted images folder                                 
+        deny all;                                                              
+    }                                                                          
+                                                                               
+    # MediaWiki assets (usually images)                                        
+    location ~ ^/w/resources/(assets|lib|src) {                                
+        try_files $uri 404;                                                       
+        add_header Cache-Control "public";                                        
+        expires 7d;                                                               
+    }                                                                             
+                                                                                  
+    # Assets, scripts and styles from skins and extensions                        
+    location ~ ^/w/(skins|extensions)/.+\.(css|js|gif|jpg|jpeg|png|svg|wasm)$ {   
+        try_files $uri 404;                                                       
+        add_header Cache-Control "public";                                       
+        expires 7d;                                                               
+    }                
+
+    # Favicon                                                                  
+    location = /favicon.ico {                                                  
+        alias /w/images/6/64/Favicon.ico;                                      
+        add_header Cache-Control "public";                                     
+        expires 7d;                                                            
+    }                                                                          
+                                                                               
+    # Handling for Mediawiki REST API, see [[mw:API:REST_API]]                 
+    location /w/rest.php/ {                                                    
+        try_files $uri $uri/ /w/rest.php?$query_string;                        
+    }                                                                          
+                                                                               
+    location /wiki/ {                                                          
+        rewrite ^/wiki/(?<pagename>.*)$ /w/index.php;                          
+    }                                                                          
+                                                                               
+    # Allow robots.txt in case you have one                                    
+    location = /robots.txt {                                                   
+    }                                                                          
+                                                                               
+    # Explicit access to the root website, redirect to main page (adapt as needed)
+    location = / {                                                                
+        return 301 /wiki/P..gina_principal;                                       
+    }                                                                             
+                                                                                  
+    # Every other entry point will be disallowed.                                 
+    # Add specific rules for other entry points/images as needed above this       
+    location / {                                                                  
+        return 404;                                                               
+    }  
+}

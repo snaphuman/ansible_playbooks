@@ -67,6 +67,9 @@
     - role: deploy/dextra_reports
       tags:
         - dextra_reports
+    - role: deploy/wiki_crc
+      tags:
+        - wiki_crc
 
 - name: manage deployment database operations
   hosts: dbservers, !localdev, !webservers
@@ -84,6 +87,11 @@
     - role: deploy/solucion_controversias/db
       tags:
         - solucion_controversias_db
+      vars:
+        - operation: "import" # use import or export"
+    - role: deploy/wiki_crc/db
+      tags:
+        - wiki_crc_db
       vars:
         - operation: "import" # use import or export"
 

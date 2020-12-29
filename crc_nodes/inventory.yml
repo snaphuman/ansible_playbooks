@@ -1,9 +1,9 @@
 
 [webservers]
-vm-apps-crc ansible_host=10.0.1.4 ansible_user=webmaster apps=[postdata,drupal,portal_crc,solucion-controversias,dextra_reports,geci]
+vm-apps-crc ansible_host=10.0.1.4 ansible_user=webmaster apps=[postdata,drupal,portal_crc,solucion-controversias,dextra_reports,geci,wiki_crc]
 vm-postdata ansible_host=12.0.1.13 ansible_user=webmaster apps=[postdata]
 vm-app-paginaweb ansible_host=12.0.1.14 ansible_user=webmaster apps=[portal_crc,dextra_reports]
-vm-app-webcorp ansible_host=12.0.1.20 ansible_user=webmaster apps=[solucion-controversias,geci]
+vm-app-webcorp ansible_host=12.0.1.20 ansible_user=webmaster apps=[solucion-controversias,geci,wiki_crc]
 webportalapp ansible_host=11.0.10.5 ansible_user=fhernandez apps=[portal_crc]
 vm-limesurvey ansible_host=150.136.208.188 ansible_user=webmaster apps=[encuestas]
 
@@ -11,7 +11,7 @@ vm-limesurvey ansible_host=150.136.208.188 ansible_user=webmaster apps=[encuesta
 vm-ally-svc ansible_host=150.136.237.86 ansible_user=webmaster apps=[fae2]
 
 [dbservers]
-vm-dbs-crc ansible_host=10.0.1.12 ansible_user=webmaster apps=[postdata,drupal,portal_crc,solucion-controversias,geci]
+vm-dbs-crc ansible_host=10.0.1.12 ansible_user=webmaster apps=[postdata,drupal,portal_crc,solucion-controversias,geci,wiki_crc]
 vm-db-postdata ansible_host=12.0.1.9 ansible_user=webmaster apps=[postdata]
 vm-db-paginaweb ansible_host=12.0.1.15 ansible_user=webmaster
 vm-db-webcorp ansible_host=12.0.1.21 ansible_user=webmaster apps=[solucion-controversias,geci]

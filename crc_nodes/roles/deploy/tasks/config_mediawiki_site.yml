@@ -1,0 +1,21 @@
+- name: debug item name
+  debug:
+    msg: item.name
+  with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.type == "mediawiki" 
+   - item.name == deploy_app
+
+- name: Copy mediawiki config file
+  template:
+    src: mediawiki.1.32.localsettings.php.j2
+    dest: "{{ item.path }}/LocalSettings.php"
+    owner: webmaster
+    group: webmaster
+    mode: '0444'
+  with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.type == "mediawiki" 
+   - item.name == deploy_app

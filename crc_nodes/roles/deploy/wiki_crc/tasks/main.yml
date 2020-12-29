@@ -1,0 +1,9 @@
+# Specific wiki_crc deploy tasks
+
+- name: Syncronice files from dev to wiki_crc
+  shell: rsync -avzP -e 'ssh' {{ lookup('env', 'VM_ZOQUE_HOME') }}/Code/wikimedia/wiki_crc/www/w/images/{{ item.file_host }}:/apps/wiki_crc/www/w/images
+  delegate_to: zoque
+  become: snaphuman
+  loop: "{{ applications }}"
+  when: item.name == deploy_app
+
