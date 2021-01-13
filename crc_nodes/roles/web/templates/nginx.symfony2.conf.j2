@@ -116,24 +116,22 @@ server {
     location = /dextraCommunity/qa-config.php {
 	return 403;
     }
+
+    location ^~ /despliegue-infraestructura {
+        alias /apps/mapa_infraestructura/app/dist/;
+        expires -1;
+        add_header Pragma "no-cache";
+        add_header Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
+        try_files $uri $uri/ /index.html = 404;
+    }
+
+    location ^~ /news-service/ {
+        include /etc/nginx/mime.types;
+        rewrite ^/news-service/(.*) /$1 break;
+        proxy_pass http://127.0.0.1:5002;
+    }
     {% endif %}
 }
-{% if item.name == "portal_crc" %}
-
-location ^~ /despliegue-infraestructura {
-    alias /apps/mapa_infraestructura/app/dist/;
-    expires -1;
-    add_header Pragma "no-cache";
-    add_header Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
-    try_files $uri $uri/ /index.html = 404;
-}
-
-location ^~ /news-service/ {
-    include /etc/nginx/mime.types;
-    rewrite ^/news-service/(.*) /$1 break;
-    proxy_pass http://127.0.0.1:5002;
-}
-
 {% for item in locations %}
 server {
 	server_name {{ item.name }};
@@ -152,14 +150,21 @@ server {
     }
 }
 
+{% if item.name == "portal_crc" %}
 server {
+    {% if item.port == '443' %}
     listen 443 ssl; 
+    {% else %}
+    listen 80;
+    {% endif %}
 
     server_name api-noticias.crcom.gov.co www.api-noticias.crcom.gov.co;
     add_header Strict-Transport-Security "max-age=31536000" always; 
     
+    {% if item.port == '443' %}
     ssl_certificate /etc/nginx/ssl/portalweb.cer;
     ssl_certificate_key /etc/nginx/ssl/portalweb.key;
+    {% endif %}
 
     access_log /misc/logs/portal_crc/api-noticias.access.log;
     error_log /misc/logs/portal_crc/api-noticias.error.log;
