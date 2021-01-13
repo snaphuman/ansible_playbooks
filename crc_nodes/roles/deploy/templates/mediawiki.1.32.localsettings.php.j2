@@ -61,10 +61,10 @@ $wgEmailAuthentication = true;
 
 ## Database settings
 $wgDBtype = "mysql";
-$wgDBserver = "{{ item.dbhost }}";
+$wgDBserver = "{{ item.db_host }}";
 $wgDBname = "{{  item.dbname }}";
 $wgDBuser = "{{ item.dbuser }}";
-$wgDBpassword = "{{ item.upassdw }}";
+$wgDBpassword = "{{ item.upasswd }}";
 
 # MySQL specific settings
 $wgDBprefix = "crc_";
@@ -144,8 +144,8 @@ $wgSMTP = [
  'IDHost'   => "crcom.gov.co",
  'port'     => 25,
  'auth'     => false,
- 'username' => "{{ wiki_smtp_username }}",
- 'password' => "{{ wiki_smtp_password }}"
+ 'username' => "{{ item.wiki_smtp_username }}",
+ 'password' => "{{ item.wiki_smtp_password }}"
 ];
 
 wfLoadExtension( 'WikiEditor' );// Hace el llamado a la carpeta WikiEditor ubicado en la carpeta extensions

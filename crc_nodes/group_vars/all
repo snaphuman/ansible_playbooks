@@ -147,6 +147,6 @@ applications:
     server_name: wikicrc.crcom.gov.co
     default_server: false
     ssl: "{% if env == 'prod' %}false{% elif env == 'test' %}false{% endif %}"
-    wiki_smtp_username: "{{ lookup('env', 'VM_WIKI_SMPT_USERNAME' ) }}"
+    wiki_smtp_username: "{{ lookup('env', 'VM_WIKI_SMTP_USERNAME' ) }}"
     wiki_smtp_password: "{{ lookup('env', 'VM_WIKI_SMTP_PASSWORD') }}"
     wiki_secretkey: "{{ lookup('env', 'VM_WIKI_SECRETKEY') }}"
