@@ -8,21 +8,14 @@
     - item.name == deploy_app
 
 - name: Create application database
-  mysql_db: name={{ item.dbname }} state=present
+  mysql_db: name={{ item.dbname }} state=present login_password={{ db_root_password }}
   loop: "{{ applications }}"
   when:
     - deploy_app is defined
     - item.name == deploy_app
 
 - name: Create application database user
-  mysql_user: name={{ item.dbuser }} password={{ item.upasswd }} priv='{{ item.dbname }}.*:ALL' state=present
-  loop: "{{ applications }}"
-  when:
-    - deploy_app is defined
-    - item.name == deploy_app
-
-- name: Create application database user
-  mysql_user: name={{ item.dbuser }} password={{ item.upasswd }} priv='{{ item.dbname }}.*:ALL' state=present host="%"
+  mysql_user: name={{ item.dbuser }} password={{ item.upasswd }} priv='{{ item.dbname }}.*:ALL' state=present  host="%" login_password={{ db_root_password }}
   loop: "{{ applications }}"
   when:
     - deploy_app is defined

@@ -19,3 +19,33 @@
    - deploy_app is defined
    - item.type == "mediawiki" 
    - item.name == deploy_app
+
+- name: Set SELinux policy for mediawiki site directory
+  sefcontext:
+    target: "{{ item.path }}/(/.*)?"
+    setype: httpd_sys_content_t
+    state: present
+  with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.type == "mediawiki" 
+   - item.name == deploy_app
+
+- name: Set SELinux policy for mediawiki images folder
+  sefcontext:
+    target: "{{ item.path }}/images(/.*)?"
+    setype: httpd_sys_rw_content_t
+    state: present
+  with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.type == "mediawiki" 
+   - item.name == deploy_app
+  
+- name: Set SElinux on all the site files
+  command: restorecon -Rv {{ item.path }}
+  with_items: "{{ applications }}"
+  when:
+   - deploy_app is defined
+   - item.type == "mediakwiki" 
+   - item.name == deploy_app
